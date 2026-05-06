@@ -33,6 +33,35 @@ body {
     linear-gradient(180deg, #ffffff 0%, #f8f4ef 54%, #efe7dc 100%);
 }
 
+.hero-premium-bg {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(115deg, #ffffff 0%, #f8f4ef 34%, #efe7dc 34%, #efe7dc 48%, #003e40 48%, #002d2f 100%);
+}
+
+.hero-premium-bg::before,
+.hero-premium-bg::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hero-premium-bg::before {
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 43%, rgba(0, 194, 199, 0.34) 43%, rgba(0, 194, 199, 0.34) 45%, transparent 45%),
+    repeating-linear-gradient(135deg, rgba(0, 62, 64, 0.06) 0 1px, transparent 1px 22px);
+  opacity: 0.92;
+}
+
+.hero-premium-bg::after {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.82) 0%, rgba(248, 244, 239, 0.68) 34%, transparent 56%),
+    linear-gradient(180deg, rgba(0, 194, 199, 0.18) 0%, transparent 42%, rgba(0, 62, 64, 0.18) 100%);
+}
+
 .petrol-panel {
   background:
     linear-gradient(135deg, #003e40 0%, #002d2f 100%);
@@ -50,6 +79,24 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+@media (max-width: 1023px) {
+  .hero-premium-bg {
+    background:
+      linear-gradient(180deg, #ffffff 0%, #f8f4ef 48%, #003e40 48%, #002d2f 100%);
+  }
+
+  .hero-premium-bg::before {
+    background:
+      linear-gradient(180deg, transparent 0%, transparent 44%, rgba(0, 194, 199, 0.28) 44%, rgba(0, 194, 199, 0.28) 46%, transparent 46%),
+      repeating-linear-gradient(135deg, rgba(0, 62, 64, 0.06) 0 1px, transparent 1px 18px);
+  }
+
+  .hero-premium-bg::after {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(248, 244, 239, 0.7) 44%, transparent 58%);
+  }
 }
 
 ::selection {

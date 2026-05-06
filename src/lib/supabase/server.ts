@@ -1,4 +1,4 @@
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { env } from "@/lib/env";
 
@@ -21,12 +21,18 @@ export async function createSupabaseServerClient() {
           cookiesToSet: Array<{
             name: string;
             value: string;
-            options: Record<string, unknown>;
+            options: CookieOptions;
           }>
         ) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options);
-          });
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
+          } catch {
+            // Server Components can read cookies, but Next.js only allows cookie
+            // writes in Server Actions, Route Handlers, or middleware. Session
+            // refresh writes are handled by middleware when this path is read-only.
+          }
         }
       }
     }

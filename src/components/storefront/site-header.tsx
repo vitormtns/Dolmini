@@ -1,10 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
-import { AnnouncementBar } from "@/components/storefront/announcement-bar";
 import { CartLink } from "@/components/cart/cart-drawer";
+import { AnnouncementBar } from "@/components/storefront/announcement-bar";
+
+// Coloque a imagem em /public e ajuste somente este caminho.
+// Exemplo: public/logo-dolmini.png -> "/logo-dolmini.png"
+const logoSrc = "/logo-dolmini.png";
 
 const links = [
   { href: "/", label: "Início" },
@@ -21,17 +26,16 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-[rgba(0,62,64,0.12)] bg-white/88 backdrop-blur-xl">
       <AnnouncementBar />
       <div className="mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link className="group flex items-center gap-3" href="/">
-          <span className="grid h-11 w-11 place-items-center rounded-full bg-[#003E40] text-lg font-extrabold text-white shadow-soft transition group-hover:bg-[#002D2F]">
-            D
-          </span>
-          <span>
-            <span className="block text-xl font-extrabold leading-none tracking-tight text-[#003E40] sm:text-2xl">
-              Dolmini
-            </span>
-            <span className="block text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#6B7A7C]">
-              Model
-            </span>
+        <Link className="group flex min-w-0 items-center" href="/" aria-label="Dolmini Model - início">
+          <span className="relative block h-12 w-[150px] sm:h-14 sm:w-[178px]">
+            <Image
+              alt="Dolmini Model"
+              className="object-contain object-left"
+              fill
+              priority
+              sizes="(min-width: 640px) 178px, 150px"
+              src={logoSrc}
+            />
           </span>
         </Link>
 

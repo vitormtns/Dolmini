@@ -8,8 +8,8 @@ import { CartLink } from "@/components/cart/cart-drawer";
 import { AnnouncementBar } from "@/components/storefront/announcement-bar";
 
 // Coloque a imagem em /public e ajuste somente este caminho.
-// Exemplo: public/logo-dolmini.png -> "/logo-dolmini.png"
-const logoSrc = "/logo-dolmini.png";
+// Exemplo: public/logoheader.png -> "/logoheader.png"
+const logoSrc = "/logoheader.png";
 
 const links = [
   { href: "/", label: "Início" },
@@ -27,13 +27,13 @@ export function SiteHeader() {
       <AnnouncementBar />
       <div className="mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link className="group flex min-w-0 items-center" href="/" aria-label="Dolmini Model - início">
-          <span className="relative block h-12 w-[150px] sm:h-14 sm:w-[178px]">
+          <span className="relative block h-16 w-[230px] overflow-hidden sm:h-[70px] sm:w-[280px]">
             <Image
               alt="Dolmini Model"
-              className="object-contain object-left"
-              fill
+              className="absolute -left-9 -top-[105px] h-[245px] w-[302px] max-w-none object-contain sm:-left-10 sm:-top-[60px] sm:h-[180px] sm:w-[345px]"
+              height={280}
               priority
-              sizes="(min-width: 640px) 178px, 150px"
+              width={345}
               src={logoSrc}
             />
           </span>

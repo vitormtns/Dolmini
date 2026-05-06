@@ -13,7 +13,7 @@ export default function CheckoutPendingPage() {
         <CheckoutStatusCard
           tone="warning"
           title="Pagamento pendente"
-          description="Seu pedido foi iniciado e esta aguardando a confirmacao do Mercado Pago. Nao aproveitamos pagamento pela pagina de retorno."
+          description="Seu pedido foi iniciado e est\u00e1 aguardando a confirma\u00e7\u00e3o do Mercado Pago. N\u00e3o aprovamos pagamento pela p\u00e1gina de retorno."
         />
       </main>
     </StorefrontShell>

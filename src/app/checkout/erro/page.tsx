@@ -3,7 +3,7 @@ import { CheckoutStatusCard } from "@/components/checkout/checkout-status-card";
 import { StorefrontShell } from "@/components/storefront/storefront-shell";
 
 export const metadata: Metadata = {
-  title: "Pagamento nao concluido | Dolmini Model"
+  title: "Pagamento n\u00e3o conclu\u00eddo | Dolmini Model"
 };
 
 export default function CheckoutErrorPage() {
@@ -12,8 +12,8 @@ export default function CheckoutErrorPage() {
       <main className="px-4 py-16">
         <CheckoutStatusCard
           tone="danger"
-          title="Pagamento nao concluido"
-          description="O pagamento foi recusado, cancelado ou nao pode ser finalizado. Voce pode voltar aos produtos e tentar novamente."
+          title="Pagamento n\u00e3o conclu\u00eddo"
+          description="O pagamento foi recusado, cancelado ou n\u00e3o pode ser finalizado. Voc\u00ea pode voltar aos produtos e tentar novamente."
         />
       </main>
     </StorefrontShell>

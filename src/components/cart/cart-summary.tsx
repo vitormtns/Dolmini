@@ -9,8 +9,8 @@ export function CartSummary({ checkoutHref = "/checkout" }: { checkoutHref?: str
   const canCheckout = Boolean(validatedCart && !validationError);
 
   return (
-    <aside className="rounded-lg border bg-white p-5">
-      <h2 className="font-semibold">Resumo</h2>
+    <aside className="rounded-[1.5rem] border border-primary/10 bg-white p-6 shadow-lift lg:sticky lg:top-32 lg:self-start">
+      <h2 className="text-3xl font-extrabold tracking-tight text-primary">Resumo</h2>
       <p className="mt-1 text-xs text-muted-foreground">
         Valores estimados visualmente. O checkout recalcula tudo no servidor.
       </p>
@@ -33,15 +33,15 @@ export function CartSummary({ checkoutHref = "/checkout" }: { checkoutHref?: str
         </div>
       </dl>
       {validationError ? <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">{validationError}</p> : null}
-      <button className="mt-5 w-full rounded-md border px-4 py-2 text-sm font-medium" onClick={validateCart} type="button">
+      <button className="mt-5 min-h-11 w-full rounded-full border border-primary/15 px-4 py-2 text-sm font-extrabold uppercase tracking-[0.1em] text-primary transition-colors hover:bg-muted" onClick={validateCart} type="button">
         {validating ? "Validando..." : "Revalidar carrinho"}
       </button>
       {canCheckout ? (
-        <Link className="mt-3 inline-flex w-full justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground" href={checkoutHref}>
+        <Link className="mt-3 inline-flex min-h-11 w-full justify-center rounded-full bg-primary px-4 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F]" href={checkoutHref}>
           Ir para checkout
         </Link>
       ) : (
-        <button className="mt-3 w-full rounded-md bg-primary/50 px-4 py-2.5 text-sm font-medium text-primary-foreground" disabled type="button">
+        <button className="mt-3 min-h-11 w-full rounded-full bg-primary/50 px-4 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground" disabled type="button">
           Valide o carrinho para continuar
         </button>
       )}

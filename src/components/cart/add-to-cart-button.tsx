@@ -22,20 +22,20 @@ export function AddToCartButton({
   }
 
   return (
-    <div className="grid gap-3 sm:max-w-sm">
+    <div className="grid gap-3 sm:max-w-md">
       <div className="flex gap-3">
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <button
-          className="flex-1 rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+          className="min-h-12 flex-1 rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F] disabled:cursor-not-allowed disabled:opacity-60"
           disabled={disabled}
           onClick={add}
           type="button"
         >
-          {disabled ? "Indisponivel" : "Adicionar ao carrinho"}
+          {disabled ? "Indispon\u00edvel" : "Adicionar ao carrinho"}
         </button>
       </div>
       {added ? (
-        <Link className="text-sm font-medium text-emerald-700" href="/carrinho">
+        <Link className="text-sm font-semibold text-primary underline-offset-4 hover:underline" href="/carrinho">
           Produto adicionado. Ver carrinho
         </Link>
       ) : null}

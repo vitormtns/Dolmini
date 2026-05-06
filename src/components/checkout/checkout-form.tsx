@@ -6,12 +6,12 @@ import { useCart } from "@/components/cart/cart-provider";
 
 const checkoutFormSchema = z.object({
   name: z.string().min(2, "Informe seu nome."),
-  email: z.string().email("Informe um email valido."),
+  email: z.string().email("Informe um email v\u00e1lido."),
   phone: z.string().min(8, "Informe um telefone."),
   document: z.string().optional(),
   postalCode: z.string().min(5, "Informe o CEP."),
-  line1: z.string().min(3, "Informe o endereco."),
-  number: z.string().min(1, "Informe o numero."),
+  line1: z.string().min(3, "Informe o endere\u00e7o."),
+  number: z.string().min(1, "Informe o n\u00famero."),
   line2: z.string().optional(),
   neighborhood: z.string().min(2, "Informe o bairro."),
   city: z.string().min(2, "Informe a cidade."),
@@ -55,7 +55,7 @@ export function CheckoutForm() {
     }
 
     if (items.length === 0) {
-      setError("Seu carrinho esta vazio.");
+      setError("Seu carrinho est\u00e1 vazio.");
       return;
     }
 
@@ -95,8 +95,8 @@ export function CheckoutForm() {
       setLoading(false);
       setError(
         body.code === "PAYMENT_PROVIDER_NOT_CONFIGURED" || body.code === "PAYMENT_PROVIDER_ERROR"
-          ? "Checkout temporariamente indisponivel. Tente novamente mais tarde."
-          : body.error ?? "Nao foi possivel iniciar o pagamento."
+          ? "Checkout temporariamente indispon\u00edvel. Tente novamente mais tarde."
+          : body.error ?? "N\u00e3o foi poss\u00edvel iniciar o pagamento."
       );
       return;
     }
@@ -105,56 +105,72 @@ export function CheckoutForm() {
     window.location.href = body.data.checkout.checkoutUrl;
   }
 
+  const inputClass = "min-h-12 rounded-[0.85rem] border border-primary/10 bg-[#F8F4EF] px-4 py-2 text-sm text-[#102224]";
+
   return (
-    <form className="grid gap-4 rounded-lg border bg-white p-5" onSubmit={submit}>
+    <form className="grid gap-6 rounded-[1.5rem] border border-primary/10 bg-white p-5 shadow-soft sm:p-6" onSubmit={submit}>
       {error ? <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Dados</p>
+        <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-primary">Dados pessoais</h2>
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
           Nome
-          <input className="rounded-md border px-3 py-2" value={form.name} onChange={(event) => update("name", event.target.value)} />
+          <input className={inputClass} value={form.name} onChange={(event) => update("name", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           Email
-          <input className="rounded-md border px-3 py-2" type="email" value={form.email} onChange={(event) => update("email", event.target.value)} />
+          <input className={inputClass} type="email" value={form.email} onChange={(event) => update("email", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           Telefone
-          <input className="rounded-md border px-3 py-2" value={form.phone} onChange={(event) => update("phone", event.target.value)} />
+          <input className={inputClass} value={form.phone} onChange={(event) => update("phone", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           CPF opcional
-          <input className="rounded-md border px-3 py-2" value={form.document} onChange={(event) => update("document", event.target.value)} />
+          <input className={inputClass} value={form.document} onChange={(event) => update("document", event.target.value)} />
         </label>
+      </div>
+      <div className="border-t pt-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Entrega</p>
+        <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-primary">Endere&ccedil;o de entrega</h2>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
           CEP
-          <input className="rounded-md border px-3 py-2" value={form.postalCode} onChange={(event) => update("postalCode", event.target.value)} />
+          <input className={inputClass} value={form.postalCode} onChange={(event) => update("postalCode", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Endereco
-          <input className="rounded-md border px-3 py-2" value={form.line1} onChange={(event) => update("line1", event.target.value)} />
+          Endere&ccedil;o
+          <input className={inputClass} value={form.line1} onChange={(event) => update("line1", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Numero
-          <input className="rounded-md border px-3 py-2" value={form.number} onChange={(event) => update("number", event.target.value)} />
+          N&uacute;mero
+          <input className={inputClass} value={form.number} onChange={(event) => update("number", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           Complemento
-          <input className="rounded-md border px-3 py-2" value={form.line2} onChange={(event) => update("line2", event.target.value)} />
+          <input className={inputClass} value={form.line2} onChange={(event) => update("line2", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           Bairro
-          <input className="rounded-md border px-3 py-2" value={form.neighborhood} onChange={(event) => update("neighborhood", event.target.value)} />
+          <input className={inputClass} value={form.neighborhood} onChange={(event) => update("neighborhood", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           Cidade
-          <input className="rounded-md border px-3 py-2" value={form.city} onChange={(event) => update("city", event.target.value)} />
+          <input className={inputClass} value={form.city} onChange={(event) => update("city", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
           Estado
-          <input className="rounded-md border px-3 py-2" value={form.state} onChange={(event) => update("state", event.target.value)} />
+          <input className={inputClass} value={form.state} onChange={(event) => update("state", event.target.value)} />
         </label>
       </div>
-      <button className="rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground disabled:opacity-60" disabled={loading} type="submit">
+      <div className="border-t pt-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Pagamento</p>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">O checkout valida seu carrinho antes de encaminhar para o provedor configurado. Sem Mercado Pago configurado, o erro &eacute; controlado e nenhum pedido &eacute; aprovado pela URL.</p>
+      </div>
+      <button className="min-h-12 rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F] disabled:opacity-60" disabled={loading} type="submit">
         {loading ? "Criando pagamento..." : "Finalizar compra"}
       </button>
     </form>

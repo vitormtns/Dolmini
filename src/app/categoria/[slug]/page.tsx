@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { EmptyProductsState } from "@/components/storefront/empty-products-state";
 import { ProductGrid } from "@/components/storefront/product-grid";
+import { SectionHeading } from "@/components/storefront/section-heading";
 import { StorefrontShell } from "@/components/storefront/storefront-shell";
 import { CommerceError } from "@/lib/commerce/shared/errors";
 import { createCommerceCore } from "@/lib/commerce/factory";
@@ -14,9 +18,12 @@ type Props = {
 
 async function getCategoryPageData(slug: string) {
   const commerce = createCommerceCore(await createSupabaseServerClient());
-  const category = await commerce.categories.getPublicBySlug(slug);
+  const [category, categories] = await Promise.all([
+    commerce.categories.getPublicBySlug(slug),
+    commerce.categories.listPublic()
+  ]);
   const products = await commerce.products.listPublic({ categoryId: category.id });
-  return { category, products };
+  return { category, categories, products };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -47,25 +54,56 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <StorefrontShell>
-      <main className="mx-auto max-w-6xl px-4 py-10">
-        <div className="mb-8">
-          <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Categoria</p>
-          <h1 className="mt-2 text-3xl font-semibold">{data.category.name}</h1>
-          {data.category.description ? (
-            <p className="mt-3 max-w-2xl text-muted-foreground">{data.category.description}</p>
-          ) : null}
-        </div>
-
-        {data.products.length ? (
-          <ProductGrid products={data.products} />
-        ) : (
-          <div className="rounded-lg border border-dashed p-10 text-center">
-            <h2 className="font-semibold">Categoria sem produtos ativos</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Produtos publicados nesta categoria aparecerao aqui automaticamente.
-            </p>
+      <main>
+        <section className="petrol-panel overflow-hidden text-white">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[#00C2C7]">Categoria</p>
+              <h1 className="mt-3 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-7xl">{data.category.name}</h1>
+              {data.category.description ? (
+                <p className="mt-5 max-w-2xl text-sm leading-6 text-white/72">{data.category.description}</p>
+              ) : null}
+            </div>
+            <div className="grid gap-3 rounded-[1.3rem] border border-white/12 bg-white/8 p-4 sm:grid-cols-2">
+              {data.categories
+                .filter((category) => category.id !== data.category.id)
+                .slice(0, 4)
+                .map((category) => (
+                  <Link className="group flex items-center justify-between rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white/82 transition hover:bg-white hover:text-[#003E40]" href={`/categoria/${category.slug}`} key={category.id}>
+                    {category.name}
+                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                  </Link>
+                ))}
+            </div>
           </div>
-        )}
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+          <SectionHeading
+            eyebrow="Vitrine da categoria"
+            title="Produtos selecionados"
+            subtitle="Cards visuais com imagem dominante, preço claro e navegação direta para compra."
+          />
+          {data.products.length ? (
+            <>
+              <ProductGrid products={data.products} />
+              {data.products.length > 4 ? (
+                <div className="petrol-panel mt-10 rounded-[1.4rem] p-8 text-white">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C2C7]">Dolmini Model</p>
+                  <h2 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-tight">Continue explorando a curadoria completa da loja.</h2>
+                  <Link className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-[#003E40]" href="/produtos">
+                    Ver todos os produtos
+                  </Link>
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <EmptyProductsState
+              title="Categoria sem produtos ativos"
+              description="Produtos publicados nesta categoria aparecer\u00e3o aqui automaticamente."
+            />
+          )}
+        </section>
       </main>
     </StorefrontShell>
   );

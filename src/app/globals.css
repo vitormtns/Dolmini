@@ -3,22 +3,70 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
+  --background: 36 42% 97%;
+  --foreground: 188 38% 10%;
   --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --primary: 222 47% 11%;
+  --card-foreground: 188 38% 10%;
+  --primary: 181.875 100% 12.55%;
   --primary-foreground: 210 40% 98%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
+  --accent: 180 100% 32.75%;
+  --accent-foreground: 181.875 100% 12.55%;
+  --muted: 35 32% 92%;
+  --muted-foreground: 188 8% 45%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 222 47% 11%;
+  --border: 182 100% 12% / 0.12;
+  --input: 182 25% 84%;
+  --ring: 180 100% 33%;
 }
 
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+.store-gradient {
+  background:
+    linear-gradient(120deg, rgba(0, 62, 64, 0.08), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f8f4ef 54%, #efe7dc 100%);
+}
+
+.petrol-panel {
+  background:
+    linear-gradient(135deg, #003e40 0%, #002d2f 100%);
+}
+
+.dolmini-placeholder {
+  background:
+    linear-gradient(140deg, rgba(0, 167, 167, 0.16), transparent 42%),
+    linear-gradient(135deg, #f8f4ef, #efe7dc);
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.22);
+  color: hsl(var(--foreground));
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
 }

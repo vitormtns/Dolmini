@@ -13,7 +13,7 @@ export default function CheckoutSuccessPage() {
         <CheckoutStatusCard
           tone="success"
           title="Pedido recebido"
-          description="O Mercado Pago retornou sucesso, mas a aprovacao final do pedido depende da confirmacao via webhook. Voce recebera a atualizacao assim que o pagamento for confirmado."
+          description="O Mercado Pago retornou sucesso, mas a aprova\u00e7\u00e3o final do pedido depende da confirma\u00e7\u00e3o via webhook. Voc\u00ea receber\u00e1 a atualiza\u00e7\u00e3o assim que o pagamento for confirmado."
         />
       </main>
     </StorefrontShell>

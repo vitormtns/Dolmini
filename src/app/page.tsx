@@ -1,15 +1,23 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ArrowRight, BadgePercent, ShoppingBag, Sparkles } from "lucide-react";
+import { CampaignCarousel } from "@/components/storefront/campaign-carousel";
+import { CategoryShowcase } from "@/components/storefront/category-showcase";
 import { ProductGrid } from "@/components/storefront/product-grid";
+import { ProductImagePlaceholder } from "@/components/storefront/product-card";
+import { PromoBanner } from "@/components/storefront/promo-banner";
+import { SectionHeading } from "@/components/storefront/section-heading";
 import { StorefrontShell } from "@/components/storefront/storefront-shell";
+import { TrustStrip } from "@/components/storefront/trust-strip";
 import { createCommerceCore } from "@/lib/commerce/factory";
+import { formatCurrency } from "@/lib/format";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Dolmini Model | Moda selecionada com cuidado",
-  description: "Conheca a vitrine oficial da Dolmini Model."
+  title: "Dolmini Model | Moda casual, jeans e peças selecionadas",
+  description: "Loja virtual de moda casual com jeans, bermudas, calças e peças selecionadas para comprar com leveza."
 };
 
 export default async function HomePage() {
@@ -18,111 +26,149 @@ export default async function HomePage() {
     commerce.products.listPublic(),
     commerce.categories.listPublic()
   ]);
-  const featuredProducts = products.filter((product) => product.isFeatured).slice(0, 4);
+  const featuredProducts = products.filter((product) => product.isFeatured).slice(0, 8);
   const promotionProducts = products
-    .filter((product) => product.isPromotion || product.salePrice != null)
-    .slice(0, 4);
+    .filter((product) => product.isPromotion || (product.salePrice != null && product.salePrice < product.price))
+    .slice(0, 8);
+  const jeansCategory = categories.find((category) => category.slug === "jeans" || category.name.toLowerCase().includes("jeans"));
+  const jeansHref = jeansCategory ? `/categoria/${jeansCategory.slug}` : "/produtos?categoria=jeans";
+  const jeansProducts = jeansCategory
+    ? products.filter((product) => product.categoryId === jeansCategory.id).slice(0, 4)
+    : [];
+  const weeklyProducts = (featuredProducts.length ? featuredProducts : products).slice(0, 8);
+  const heroProducts = (featuredProducts.length ? featuredProducts : products).slice(0, 3);
+  const heroProduct = heroProducts[0];
+  const heroImage = heroProduct ? [...heroProduct.images].sort((a, b) => a.sortOrder - b.sortOrder)[0] : null;
 
   return (
     <StorefrontShell>
       <main>
-        <section className="bg-zinc-950 text-white">
-          <div className="mx-auto grid min-h-[78vh] max-w-6xl items-center gap-10 px-4 py-16 lg:grid-cols-[1.1fr_0.9fr]">
-            <div>
-              <p className="text-sm font-medium uppercase tracking-wide text-zinc-300">
-                Dolmini Model
-              </p>
-              <h1 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl">
-                Uma vitrine propria para comprar com mais clareza.
+        <section className="store-gradient overflow-hidden border-b border-[rgba(0,62,64,0.12)]">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:min-h-[680px] lg:grid-cols-[0.88fr_1.12fr] lg:items-center lg:py-12">
+            <div className="relative z-10">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(0,62,64,0.12)] bg-white/78 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#003E40] shadow-soft">
+                <Sparkles className="h-3.5 w-3.5 text-[#00A7A7]" />
+                Nova curadoria casual
+              </span>
+              <h1 className="mt-6 max-w-2xl text-5xl font-extrabold leading-[0.94] tracking-tight text-[#003E40] sm:text-7xl lg:text-8xl">
+                Peças que acompanham seu ritmo
               </h1>
-              <p className="mt-5 max-w-xl text-zinc-300">
-                Produtos selecionados, catalogo atualizado pelo painel interno e uma experiencia preparada para venda direta.
+              <p className="mt-6 max-w-xl text-base leading-7 text-[#536A6D] sm:text-lg">
+                Jeans, bermudas e moda casual selecionada para vestir o dia com leveza, presença e praticidade.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link className="rounded-md bg-white px-5 py-3 text-sm font-medium text-zinc-950" href="/produtos">
-                  Ver produtos
+                <Link className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#003E40] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lift transition hover:bg-[#002D2F]" href="/produtos">
+                  Comprar agora
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
-                {categories[0] ? (
-                  <Link className="rounded-md border border-white/30 px-5 py-3 text-sm font-medium" href={`/categoria/${categories[0].slug}`}>
-                    Explorar categorias
-                  </Link>
+                <Link className="inline-flex min-h-12 items-center rounded-full border border-[rgba(0,62,64,0.14)] bg-white/82 px-6 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-[#003E40] transition hover:bg-white" href={jeansHref}>
+                  Ver jeans
+                </Link>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  { icon: Sparkles, title: "Nova coleção", value: `${products.length} peças ativas` },
+                  { icon: BadgePercent, title: "Promoções ativas", value: `${promotionProducts.length} ofertas` },
+                  { icon: ShoppingBag, title: "Mais vendidos", value: featuredProducts.length ? "Destaques da vitrine" : "Curadoria Dolmini" }
+                ].map((item) => (
+                  <div className="rounded-2xl border border-[rgba(0,62,64,0.12)] bg-white/78 p-4 shadow-soft" key={item.title}>
+                    <item.icon className="h-4 w-4 text-[#00A7A7]" />
+                    <p className="mt-3 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#6B7A7C]">{item.title}</p>
+                    <p className="mt-1 text-sm font-extrabold text-[#003E40]">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative min-h-[450px] sm:min-h-[590px]">
+              <Link className="group absolute left-0 top-0 w-[70%] overflow-hidden rounded-[1.6rem] border border-white bg-white shadow-lift" href={heroProduct ? `/produtos/${heroProduct.slug}` : "/produtos"}>
+                <div className="aspect-[4/5]">
+                  {heroImage?.url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img alt={heroImage.altText ?? heroProduct?.name ?? "Dolmini Model"} className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" src={heroImage.url} />
+                  ) : (
+                    <ProductImagePlaceholder label="Nova coleção" />
+                  )}
+                </div>
+              </Link>
+
+              <div className="absolute right-0 top-12 w-[42%] overflow-hidden rounded-[1.2rem] border border-white bg-white shadow-soft">
+                <div className="aspect-[4/5]">
+                  {heroProducts[1]?.images[0]?.url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img alt={heroProducts[1].name} className="h-full w-full object-cover" src={heroProducts[1].images[0].url ?? ""} />
+                  ) : (
+                    <ProductImagePlaceholder label="Look" />
+                  )}
+                </div>
+              </div>
+
+              <div className="absolute bottom-6 right-0 w-[62%] rounded-[1.2rem] border border-[rgba(0,62,64,0.12)] bg-white p-4 shadow-lift sm:p-5">
+                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#00A7A7]">Produto em foco</p>
+                <h2 className="mt-3 line-clamp-2 text-2xl font-extrabold leading-tight tracking-tight text-[#003E40] sm:text-3xl">
+                  {heroProduct?.name ?? "Curadoria Dolmini"}
+                </h2>
+                {heroProduct ? (
+                  <p className="mt-4 text-lg font-extrabold text-[#003E40]">
+                    {formatCurrency(heroProduct.salePrice ?? heroProduct.price)}
+                  </p>
                 ) : null}
               </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {(featuredProducts.length ? featuredProducts : products.slice(0, 4)).map((product) => {
-                const image = [...product.images].sort((a, b) => a.sortOrder - b.sortOrder)[0];
-                return (
-                  <Link className="group overflow-hidden rounded-lg bg-white/10" href={`/produtos/${product.slug}`} key={product.id}>
-                    <div className="aspect-[4/5] bg-white/10">
-                      {image?.url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img alt={image.altText ?? product.name} className="h-full w-full object-cover opacity-95 transition-transform duration-300 group-hover:scale-[1.02]" src={image.url} />
-                      ) : null}
-                    </div>
-                    <div className="p-3 text-sm font-medium">{product.name}</div>
-                  </Link>
-                );
-              })}
-            </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-12">
-          <div className="mb-6 flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-semibold">Destaques</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Itens marcados no admin como destaque.</p>
-            </div>
-            <Link className="text-sm font-medium" href="/produtos">Ver todos</Link>
-          </div>
-          {featuredProducts.length ? (
-            <ProductGrid products={featuredProducts} />
+        <CampaignCarousel featured={heroProducts} promotions={promotionProducts} jeansHref={jeansHref} />
+        <CategoryShowcase categories={categories} />
+
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="Vitrine da semana"
+            title="Peças selecionadas para entrar no seu radar."
+            subtitle="Uma seleção com imagem forte, compra direta e curadoria casual para o dia a dia."
+            href="/produtos"
+            actionLabel="Ver coleção"
+          />
+          <ProductGrid products={weeklyProducts} />
+        </section>
+
+        <PromoBanner product={(jeansProducts.length ? jeansProducts : weeklyProducts)[0]} href={jeansHref} />
+
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="Promoções selecionadas"
+            title="Achados com preço especial"
+            subtitle="Quando houver ofertas ativas, elas aparecem aqui com destaque para facilitar a escolha."
+            href="/produtos?ordenar=promocoes"
+            actionLabel="Ver promoções"
+          />
+          {promotionProducts.length ? (
+            <ProductGrid products={promotionProducts.slice(0, 4)} />
           ) : (
-            <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-              Nenhum produto em destaque ainda.
-            </p>
+            <div className="rounded-[1.4rem] border border-dashed border-[rgba(0,62,64,0.2)] bg-white p-10 text-center shadow-soft">
+              <h3 className="text-2xl font-extrabold tracking-tight text-[#003E40]">Novas promoções em breve</h3>
+              <p className="mt-2 text-sm text-[#6B7A7C]">A vitrine será atualizada assim que houver ofertas ativas.</p>
+            </div>
           )}
         </section>
 
-        <section className="bg-muted/40">
-          <div className="mx-auto max-w-6xl px-4 py-12">
-            <h2 className="text-2xl font-semibold">Promocoes</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Produtos com preco promocional ou sinal de promocao.</p>
-            <div className="mt-6">
-              {promotionProducts.length ? (
-                <ProductGrid products={promotionProducts} />
-              ) : (
-                <p className="rounded-lg border border-dashed bg-white p-8 text-center text-sm text-muted-foreground">
-                  Nenhuma promocao ativa no momento.
-                </p>
-              )}
-            </div>
-          </div>
-        </section>
+        <TrustStrip />
 
-        <section className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-2xl font-semibold">Categorias</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <Link className="rounded-lg border bg-white p-5 transition-colors hover:bg-muted/40" href={`/categoria/${category.slug}`} key={category.id}>
-                <strong>{category.name}</strong>
-                {category.description ? <p className="mt-2 text-sm text-muted-foreground">{category.description}</p> : null}
+        <section className="store-gradient">
+          <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6">
+            <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#00A7A7]">Dolmini Model</p>
+            <h2 className="mt-3 text-4xl font-extrabold leading-[1.02] tracking-tight text-[#003E40] sm:text-6xl">
+              Monte sua próxima combinação com a Dolmini
+            </h2>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link className="inline-flex min-h-12 items-center rounded-full bg-[#003E40] px-7 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lift hover:bg-[#002D2F]" href="/produtos">
+                Ver produtos
               </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-t">
-          <div className="mx-auto grid max-w-6xl gap-4 px-4 py-12 md:grid-cols-3">
-            {["Catalogo atualizado", "Compra segura", "Entrega acompanhada"].map((benefit) => (
-              <div className="rounded-lg border bg-white p-5" key={benefit}>
-                <strong>{benefit}</strong>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Operacao propria com dados validados no servidor e acompanhamento pelo painel interno.
-                </p>
-              </div>
-            ))}
+              <Link className="inline-flex min-h-12 items-center rounded-full border border-[rgba(0,62,64,0.14)] bg-white px-7 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-[#003E40] hover:bg-[#F8F4EF]" href="/produtos?ordenar=promocoes">
+                Ir para promoções
+              </Link>
+            </div>
           </div>
         </section>
       </main>

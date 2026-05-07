@@ -12,20 +12,24 @@ export type HeroShowcaseSlide = {
   description: string;
   href: string;
   ctaLabel: string;
+  secondaryHref: string;
+  secondaryLabel: string;
   imageUrl?: string | null;
   imageAlt: string;
   priceLabel?: string | null;
   badge?: string;
+  detailLabel?: string;
 };
 
 function HeroFallbackVisual({ label }: { label: string }) {
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#003E40] p-6 text-center text-white">
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,194,199,0.28)_0%,transparent_34%),linear-gradient(115deg,#003E40_0%,#002D2F_48%,#EFE7DC_48%,#F8F4EF_100%)]" />
-      <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.08)_0_1px,transparent_1px_24px)]" />
-      <div className="relative">
-        <p className="text-4xl font-extrabold tracking-tight text-white">Dolmini</p>
-        <p className="mt-2 text-xs font-bold uppercase tracking-[0.22em] text-[#00C2C7]">{label}</p>
+    <div className="absolute inset-0 overflow-hidden bg-[#002D2F]">
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,#F8F4EF_0%,#EFE7DC_34%,transparent_34%),linear-gradient(135deg,#003E40_0%,#002D2F_100%)]" />
+      <div className="absolute -right-12 top-10 h-[78%] w-[58%] skew-x-[-14deg] bg-[#00C2C7]/24" />
+      <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.08)_0_1px,transparent_1px_26px)]" />
+      <div className="absolute bottom-10 right-6 w-[58%] max-w-xl rounded-[1.5rem] border border-white/18 bg-white/10 p-7 text-white shadow-lift backdrop-blur sm:right-10">
+        <p className="text-5xl font-extrabold tracking-tight sm:text-7xl">Dolmini</p>
+        <p className="mt-3 text-xs font-extrabold uppercase tracking-[0.26em] text-[#00C2C7]">{label}</p>
       </div>
     </div>
   );
@@ -39,11 +43,14 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
         : [
             {
               eyebrow: "Nova coleção",
-              title: "Curadoria Dolmini",
-              description: "Peças selecionadas para vestir o dia com leveza.",
+              title: "Peças que acompanham seu ritmo",
+              description: "Jeans, bermudas e moda casual selecionada para vestir o dia com leveza, presença e praticidade.",
               href: "/produtos",
               ctaLabel: "Ver coleção",
-              imageAlt: "Dolmini Model"
+              secondaryHref: "/produtos",
+              secondaryLabel: "Comprar agora",
+              imageAlt: "Dolmini Model",
+              detailLabel: "Nova coleção"
             }
           ],
     [slides]
@@ -51,7 +58,6 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
-  const activeSlide = safeSlides[active] ?? safeSlides[0];
 
   function goTo(index: number) {
     setActive((index + safeSlides.length) % safeSlides.length);
@@ -69,13 +75,14 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
     if (paused || safeSlides.length <= 1) return;
     const interval = window.setInterval(() => {
       setActive((current) => (current + 1) % safeSlides.length);
-    }, 5200);
+    }, 5600);
     return () => window.clearInterval(interval);
   }, [paused, safeSlides.length]);
 
   return (
-    <div
-      className="relative"
+    <section
+      aria-label="Campanhas principais"
+      className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={(event) => {
@@ -95,78 +102,81 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
         window.setTimeout(() => setPaused(false), 900);
       }}
     >
-      <div className="relative min-h-[430px] overflow-hidden rounded-[1.7rem] border border-white/70 bg-[#003E40] shadow-[0_34px_120px_rgba(0,45,47,0.34)] sm:min-h-[560px] lg:min-h-[610px]">
+      <div className="relative min-h-[560px] overflow-hidden bg-[#002D2F] shadow-[0_34px_120px_rgba(0,45,47,0.22)] sm:aspect-[12/5] sm:min-h-[520px] lg:min-h-[640px]">
         {safeSlides.map((slide, index) => (
-          <Link
+          <article
             aria-hidden={active !== index}
             className={cn(
-              "absolute inset-0 block transition duration-700 ease-out",
-              active === index ? "z-10 translate-x-0 opacity-100" : "z-0 translate-x-4 opacity-0"
+              "absolute inset-0 transition duration-700 ease-out",
+              active === index ? "z-10 scale-100 opacity-100" : "z-0 scale-[1.015] opacity-0"
             )}
-            href={slide.href}
             key={`${slide.eyebrow}-${slide.title}`}
-            tabIndex={active === index ? 0 : -1}
           >
-            <div className="absolute inset-0">
-              {slide.imageUrl ? (
-                <Image
-                  alt={slide.imageAlt}
-                  className="h-full w-full object-cover"
-                  fill
-                  priority={index === 0}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  src={slide.imageUrl}
-                />
-              ) : (
-                <HeroFallbackVisual label={slide.eyebrow} />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#002D2F]/92 via-[#003E40]/38 to-transparent" />
-              <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/18 to-transparent" />
-            </div>
+            {slide.imageUrl ? (
+              <Image
+                alt={slide.imageAlt}
+                className="h-full w-full object-cover object-center"
+                fill
+                priority={index === 0}
+                sizes="100vw"
+                src={slide.imageUrl}
+              />
+            ) : (
+              <HeroFallbackVisual label={slide.detailLabel ?? slide.eyebrow} />
+            )}
 
-            <div className="relative flex min-h-[430px] flex-col justify-end p-5 text-white sm:min-h-[560px] sm:p-7 lg:min-h-[610px]">
-              <div className="mb-auto flex items-start justify-between gap-4">
-                <span className="rounded-full border border-white/18 bg-white/16 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur">
+            <div className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(90deg,rgba(248,244,239,0.96)_0%,rgba(248,244,239,0.9)_28%,rgba(248,244,239,0.55)_42%,rgba(248,244,239,0)_58%)]" />
+            <div className="absolute inset-y-0 left-0 w-[58%] bg-[repeating-linear-gradient(135deg,rgba(0,62,64,0.045)_0_1px,transparent_1px_30px)]" />
+
+            <div className="relative z-20 mx-auto flex min-h-[560px] max-w-[1500px] flex-col justify-center px-5 py-10 sm:min-h-[520px] sm:px-8 lg:min-h-[640px] lg:px-12 xl:px-16">
+              <div className="max-w-[740px]">
+                <span className="inline-flex rounded-full border border-[rgba(0,62,64,0.14)] bg-white/84 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#003E40] shadow-soft backdrop-blur">
                   {slide.eyebrow}
                 </span>
+                <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-[0.95] tracking-tight text-[#003E40] sm:text-6xl lg:text-8xl">
+                  {slide.title}
+                </h1>
+                <p className="mt-5 max-w-xl text-base leading-7 text-[#536A6D] sm:text-lg">
+                  {slide.description}
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#003E40] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lift transition hover:bg-[#002D2F]" href={slide.href}>
+                    {slide.ctaLabel}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link className="inline-flex min-h-12 items-center rounded-full border border-[rgba(0,62,64,0.16)] bg-white/88 px-6 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-[#003E40] transition hover:bg-white" href={slide.secondaryHref}>
+                    {slide.secondaryLabel}
+                  </Link>
+                </div>
+              </div>
+
+              <div className="mt-10 flex max-w-xl flex-wrap gap-3">
+                <span className="rounded-2xl border border-[rgba(0,62,64,0.12)] bg-white/82 px-4 py-3 text-sm font-extrabold text-[#003E40] shadow-soft backdrop-blur">
+                  {slide.detailLabel ?? "Dolmini Model"}
+                </span>
+                {slide.priceLabel ? (
+                  <span className="rounded-2xl bg-[#003E40] px-4 py-3 text-sm font-extrabold text-white shadow-soft">
+                    {slide.priceLabel}
+                  </span>
+                ) : null}
                 {slide.badge ? (
-                  <span className="rounded-full bg-[#00C2C7] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#003E40] shadow-soft">
+                  <span className="rounded-2xl bg-[#00C2C7] px-4 py-3 text-sm font-extrabold text-[#003E40] shadow-soft">
                     {slide.badge}
                   </span>
                 ) : null}
               </div>
-
-              <div className="max-w-md">
-                <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C2C7]">Produto em foco</p>
-                <h2 className="mt-3 text-3xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">
-                  {slide.title}
-                </h2>
-                <p className="mt-3 max-w-sm text-sm leading-6 text-white/78">{slide.description}</p>
-                <div className="mt-5 flex flex-wrap items-center gap-3">
-                  {slide.priceLabel ? (
-                    <strong className="rounded-full bg-white px-4 py-2 text-sm font-extrabold text-[#003E40]">
-                      {slide.priceLabel}
-                    </strong>
-                  ) : null}
-                  <span className="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-white backdrop-blur">
-                    {slide.ctaLabel}
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </div>
             </div>
-          </Link>
+          </article>
         ))}
 
-        <div className="pointer-events-none absolute inset-4 z-20 rounded-[1.2rem] border border-white/14" />
-        <div className="absolute bottom-5 left-5 right-5 z-30 flex items-center justify-between gap-4">
+        <div className="absolute bottom-5 left-1/2 z-30 flex w-full max-w-[1500px] -translate-x-1/2 items-center justify-between gap-4 px-5 sm:bottom-7 sm:px-8 lg:px-12 xl:px-16">
           <div className="flex gap-2">
             {safeSlides.map((slide, index) => (
               <button
                 aria-label={`Ir para o slide ${index + 1}: ${slide.eyebrow}`}
                 className={cn(
                   "h-2 rounded-full transition-all",
-                  active === index ? "w-8 bg-[#00C2C7]" : "w-2 bg-white/55 hover:bg-white"
+                  active === index ? "w-10 bg-[#00C2C7]" : "w-2 bg-[#003E40]/35 hover:bg-[#003E40]"
                 )}
                 key={`${slide.eyebrow}-dot`}
                 onClick={() => {
@@ -181,7 +191,7 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
             <div className="hidden gap-2 sm:flex">
               <button
                 aria-label="Slide anterior"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/18 bg-white/14 text-white backdrop-blur transition hover:bg-white hover:text-[#003E40]"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/28 bg-white/20 text-white backdrop-blur transition hover:bg-white hover:text-[#003E40]"
                 onClick={() => {
                   setPaused(true);
                   previous();
@@ -192,7 +202,7 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
               </button>
               <button
                 aria-label="Próximo slide"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/18 bg-white/14 text-white backdrop-blur transition hover:bg-white hover:text-[#003E40]"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/28 bg-white/20 text-white backdrop-blur transition hover:bg-white hover:text-[#003E40]"
                 onClick={() => {
                   setPaused(true);
                   next();
@@ -205,11 +215,6 @@ export function HeroShowcaseCarousel({ slides }: { slides: HeroShowcaseSlide[] }
           ) : null}
         </div>
       </div>
-
-      <div className="absolute -bottom-4 -left-3 z-20 hidden rounded-2xl border border-[rgba(0,62,64,0.12)] bg-white p-4 shadow-lift md:block">
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#00A7A7]">Vitrine ativa</p>
-        <p className="mt-1 max-w-[190px] text-sm font-extrabold leading-5 text-[#003E40]">{activeSlide.title}</p>
-      </div>
-    </div>
+    </section>
   );
 }

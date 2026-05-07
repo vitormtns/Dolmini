@@ -21,7 +21,7 @@ export class CartService {
     const items = input.items.map((item) => {
       const product = productMap.get(item.productId);
       if (!product) {
-        throw new CommerceError("Produto nao encontrado.", "PRODUCT_NOT_FOUND", 404);
+        throw new CommerceError("Produto não encontrado.", "PRODUCT_NOT_FOUND", 404);
       }
 
       const variant = item.variantId
@@ -30,7 +30,7 @@ export class CartService {
 
       if (item.variantId && !variant) {
         throw new CommerceError(
-          `Variacao nao encontrada para ${product.name}.`,
+          `Variação não encontrada para ${product.name}.`,
           "PRODUCT_NOT_FOUND",
           404
         );

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     if (!body.cart?.items?.length) throw new CommerceError("Carrinho vazio.", "CART_EMPTY", 400);
     if (!env.MERCADO_PAGO_ACCESS_TOKEN) {
       throw new CommerceError(
-        "Checkout temporariamente indisponivel. Tente novamente mais tarde.",
+        "Checkout temporariamente indisponível. Tente novamente mais tarde.",
         "PAYMENT_PROVIDER_NOT_CONFIGURED",
         503
       );

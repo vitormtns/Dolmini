@@ -6,7 +6,7 @@ import { useCart } from "@/components/cart/cart-provider";
 
 const checkoutFormSchema = z.object({
   name: z.string().min(2, "Informe seu nome."),
-  email: z.string().email("Informe um email v\u00e1lido."),
+  email: z.string().email("Informe um e-mail válido."),
   phone: z.string().min(8, "Informe um telefone."),
   document: z.string().optional(),
   postalCode: z.string().min(5, "Informe o CEP."),
@@ -120,7 +120,7 @@ export function CheckoutForm() {
           <input className={inputClass} value={form.name} onChange={(event) => update("name", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Email
+          E-mail
           <input className={inputClass} type="email" value={form.email} onChange={(event) => update("email", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
@@ -128,7 +128,7 @@ export function CheckoutForm() {
           <input className={inputClass} value={form.phone} onChange={(event) => update("phone", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          CPF opcional
+          CPF (opcional)
           <input className={inputClass} value={form.document} onChange={(event) => update("document", event.target.value)} />
         </label>
       </div>

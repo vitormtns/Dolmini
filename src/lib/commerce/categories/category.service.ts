@@ -12,7 +12,7 @@ export class CategoryService {
   async getPublicBySlug(slug: string) {
     const category = await this.categories.findBySlug(slug);
     if (!category || category.status !== "active") {
-      throw new CommerceError("Categoria nao encontrada.", "category_not_found", 404);
+      throw new CommerceError("Categoria não encontrada.", "category_not_found", 404);
     }
 
     return category;

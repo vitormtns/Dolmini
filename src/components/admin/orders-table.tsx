@@ -17,7 +17,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
               <th className="px-4 py-3">Pedido</th>
               <th className="px-4 py-3">Pagamento</th>
               <th className="px-4 py-3">Data</th>
-              <th className="px-4 py-3 text-right">Acoes</th>
+              <th className="px-4 py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -34,7 +34,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                 <td className="px-4 py-3">{formatDate(order.createdAt)}</td>
                 <td className="px-4 py-3 text-right">
                   <Link className="rounded-md border px-3 py-2 text-xs font-medium" href={`/admin/pedidos/${order.id}`}>
-                    Ver detalhe
+                    Ver detalhes
                   </Link>
                 </td>
               </tr>

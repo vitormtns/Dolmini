@@ -47,7 +47,7 @@ export const productCreateSchema = productBaseSchema.superRefine((input, context
     context.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["salePrice"],
-      message: "Preco promocional deve ser menor que o preco normal."
+      message: "Preço promocional deve ser menor que o preço normal."
     });
   }
 
@@ -55,7 +55,7 @@ export const productCreateSchema = productBaseSchema.superRefine((input, context
     context.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["categoryId"],
-      message: "Categoria e obrigatoria para publicar produto."
+      message: "Categoria é obrigatória para publicar o produto."
     });
   }
 });
@@ -67,7 +67,7 @@ export const productUpdateSchema = productBaseSchema.partial().extend({
     context.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["salePrice"],
-      message: "Preco promocional deve ser menor que o preco normal."
+      message: "Preço promocional deve ser menor que o preço normal."
     });
   }
 
@@ -75,7 +75,7 @@ export const productUpdateSchema = productBaseSchema.partial().extend({
     context.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["categoryId"],
-      message: "Categoria e obrigatoria para publicar produto."
+      message: "Categoria é obrigatória para publicar o produto."
     });
   }
 });

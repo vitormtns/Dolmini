@@ -38,7 +38,7 @@ export function CartSummary({ checkoutHref = "/checkout" }: { checkoutHref?: str
       </button>
       {canCheckout ? (
         <Link className="mt-3 inline-flex min-h-11 w-full justify-center rounded-full bg-primary px-4 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F]" href={checkoutHref}>
-          Ir para checkout
+          Finalizar compra
         </Link>
       ) : (
         <button className="mt-3 min-h-11 w-full rounded-full bg-primary/50 px-4 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground" disabled type="button">

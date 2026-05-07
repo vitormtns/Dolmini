@@ -37,7 +37,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
     const response = await fetch(`/api/admin/products?id=${id}`, { method: "DELETE" });
     if (!response.ok) {
       const body = await response.json();
-      alert(body.error ?? "Nao foi possivel arquivar.");
+      alert(body.error ?? "Não foi possível arquivar.");
       return;
     }
     router.refresh();
@@ -51,10 +51,10 @@ export function ProductsTable({ products }: { products: Product[] }) {
             <tr>
               <th className="px-4 py-3">Produto</th>
               <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Preco</th>
+              <th className="px-4 py-3">Preço</th>
               <th className="px-4 py-3">Estoque</th>
               <th className="px-4 py-3">Sinais</th>
-              <th className="px-4 py-3 text-right">Acoes</th>
+              <th className="px-4 py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -85,7 +85,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
                       {product.isFeatured ? <span className="rounded bg-muted px-2 py-1 text-xs">Destaque</span> : null}
-                      {product.isPromotion ? <span className="rounded bg-muted px-2 py-1 text-xs">Promocao</span> : null}
+                      {product.isPromotion ? <span className="rounded bg-muted px-2 py-1 text-xs">Promoção</span> : null}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right">

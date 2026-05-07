@@ -33,7 +33,7 @@ export function CategoryForm() {
     setSaving(false);
 
     if (!response.ok || !body.success) {
-      setError(body.error ?? "Nao foi possivel criar categoria.");
+      setError(body.error ?? "Não foi possível criar a categoria.");
       return;
     }
 
@@ -76,7 +76,7 @@ export function CategoryForm() {
         </button>
       </div>
       <label className="grid gap-2 text-sm font-medium md:col-span-4">
-        Descricao
+        Descrição
         <textarea className="min-h-20 rounded-md border px-3 py-2" value={description} onChange={(event) => setDescription(event.target.value)} />
       </label>
     </form>

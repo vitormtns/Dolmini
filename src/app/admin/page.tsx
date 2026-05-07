@@ -18,7 +18,7 @@ export default async function AdminPage() {
     <>
       <AdminHeader
         title="Painel admin"
-        description="Controle minimo de catalogo e pedidos da Dolmini Model."
+        description="Controle mínimo de catálogo e pedidos da Dolmini Model."
       />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total de produtos" value={products.length} />
@@ -29,11 +29,11 @@ export default async function AdminPage() {
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Link className="rounded-lg border bg-white p-5 transition-colors hover:bg-muted/60" href="/admin/produtos/novo">
           <strong>Novo produto</strong>
-          <p className="mt-1 text-sm text-muted-foreground">Cadastrar item, estoque, preco e imagens.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Cadastrar item, estoque, preço e imagens.</p>
         </Link>
         <Link className="rounded-lg border bg-white p-5 transition-colors hover:bg-muted/60" href="/admin/pedidos">
           <strong>Ver pedidos</strong>
-          <p className="mt-1 text-sm text-muted-foreground">Acompanhar pagamentos e operacao.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Acompanhar pagamentos e operação.</p>
         </Link>
       </div>
     </>

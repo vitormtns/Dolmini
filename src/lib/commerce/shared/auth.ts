@@ -9,7 +9,7 @@ export async function requireAdmin() {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    throw new CommerceError("Sessao obrigatoria.", "unauthorized", 401);
+    throw new CommerceError("Sessão obrigatória.", "unauthorized", 401);
   }
 
   const { data: profile, error: profileError } = await supabase

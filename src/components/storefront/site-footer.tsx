@@ -1,11 +1,15 @@
 import Link from "next/link";
 
+const footerLogoSrc = "/logofooter.png";
+
 export function SiteFooter() {
   return (
     <footer className="petrol-panel text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
         <div>
-          <p className="text-4xl font-extrabold tracking-tight">Dolmini Model</p>
+          <div className="h-40 w-110">
+            <img alt="Dolmini Model" className="h-full w-full object-contain object-left" src={footerLogoSrc} />
+          </div>
           <p className="mt-4 max-w-md text-sm leading-6 text-white/72">
             Loja virtual de moda casual, jeans, bermudas e peças selecionadas com curadoria visual e compra direta.
           </p>

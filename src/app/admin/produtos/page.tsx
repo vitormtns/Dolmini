@@ -13,13 +13,13 @@ export default async function ProductsPage() {
     <>
       <AdminHeader
         title="Produtos"
-        description="Catalogo, estoque, preco, promocao e status."
+        description="Catálogo, estoque, preço, promoção e status."
         action={<Link className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground" href="/admin/produtos/novo">Novo produto</Link>}
       />
       {products.length > 0 ? (
         <ProductsTable products={products} />
       ) : (
-        <EmptyState title="Nenhum produto cadastrado" description="Comece criando o primeiro produto vendavel da Dolmini Model." actionHref="/admin/produtos/novo" actionLabel="Criar produto" />
+        <EmptyState title="Nenhum produto cadastrado" description="Comece criando o primeiro produto vendável da Dolmini Model." actionHref="/admin/produtos/novo" actionLabel="Criar produto" />
       )}
     </>
   );

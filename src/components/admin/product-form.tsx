@@ -89,7 +89,7 @@ export function ProductForm({
     setSaving(false);
 
     if (!response.ok || !body.success) {
-      setError(body.error ?? "Nao foi possivel salvar o produto.");
+      setError(body.error ?? "Não foi possível salvar o produto.");
       return;
     }
 
@@ -111,11 +111,11 @@ export function ProductForm({
           <input className="rounded-md border px-3 py-2" required value={form.slug} onChange={(event) => { setSlugTouched(true); update("slug", slugify(event.target.value)); }} />
         </label>
         <label className="grid gap-2 text-sm font-medium md:col-span-2">
-          Descricao curta
+          Descrição curta
           <textarea className="min-h-20 rounded-md border px-3 py-2" value={form.shortDescription} onChange={(event) => update("shortDescription", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium md:col-span-2">
-          Descricao completa
+          Descrição completa
           <textarea className="min-h-32 rounded-md border px-3 py-2" value={form.description} onChange={(event) => update("description", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
@@ -137,11 +137,11 @@ export function ProductForm({
           </select>
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Preco normal
+          Preço normal
           <input className="rounded-md border px-3 py-2" min="0.01" required step="0.01" type="number" value={form.price} onChange={(event) => update("price", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Preco promocional
+          Preço promocional
           <input className="rounded-md border px-3 py-2" min="0.01" step="0.01" type="number" value={form.salePrice} onChange={(event) => update("salePrice", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
@@ -155,17 +155,17 @@ export function ProductForm({
           </label>
           <label className="inline-flex items-center gap-2 text-sm font-medium">
             <input checked={form.isPromotion} type="checkbox" onChange={(event) => update("isPromotion", event.target.checked)} />
-            Promocao
+            Promoção
           </label>
         </div>
       </div>
       <div className="grid gap-4 rounded-lg border bg-white p-5 md:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
-          SEO title
+          Título SEO
           <input className="rounded-md border px-3 py-2" value={form.seoTitle} onChange={(event) => update("seoTitle", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          SEO description
+          Descrição SEO
           <input className="rounded-md border px-3 py-2" value={form.seoDescription} onChange={(event) => update("seoDescription", event.target.value)} />
         </label>
       </div>

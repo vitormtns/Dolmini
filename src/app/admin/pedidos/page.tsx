@@ -58,7 +58,7 @@ export default async function OrdersPage({ searchParams }: Props) {
       {orders.length > 0 ? (
         <OrdersTable orders={orders} />
       ) : (
-        <EmptyState title="Nenhum pedido encontrado" description="Os pedidos aparecerao aqui quando o checkout comecar a receber vendas." />
+        <EmptyState title="Nenhum pedido encontrado" description="Os pedidos aparecerão aqui quando o checkout começar a receber vendas." />
       )}
     </>
   );

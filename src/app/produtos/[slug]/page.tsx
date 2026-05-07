@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, HeartHandshake, PackageCheck, ShieldCheck } from "lucide-react";
 import { AddToCartButton } from "@/components/cart/add-to-cart-button";
-import { ProductImagePlaceholder } from "@/components/storefront/product-card";
+import { ProductGalleryClient } from "@/components/storefront/product-gallery-client";
 import { ProductGrid } from "@/components/storefront/product-grid";
 import { SectionHeading } from "@/components/storefront/section-heading";
 import { StorefrontShell } from "@/components/storefront/storefront-shell";
@@ -80,28 +80,7 @@ export default async function ProductPage({ params }: Props) {
         </nav>
 
         <div className="grid gap-9 lg:grid-cols-[1.08fr_0.92fr]">
-          <section className="grid gap-3">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem] border border-[rgba(0,62,64,0.12)] bg-[#EFE7DC] shadow-lift">
-              {images[0]?.url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img alt={images[0].altText ?? product.name} className="h-full w-full object-cover" src={images[0].url} />
-              ) : (
-                <ProductImagePlaceholder label="Imagem em breve" />
-              )}
-            </div>
-            {images.length > 1 ? (
-              <div className="grid grid-cols-4 gap-3">
-                {images.slice(1, 5).map((image) => (
-                  <div className="aspect-square overflow-hidden rounded-[0.9rem] border border-[rgba(0,62,64,0.12)] bg-[#EFE7DC]" key={image.id}>
-                    {image.url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img alt={image.altText ?? product.name} className="h-full w-full object-cover" src={image.url} />
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </section>
+          <ProductGalleryClient images={images} productName={product.name} />
 
           <section className="lg:sticky lg:top-32 lg:self-start">
             <div className="rounded-[1.5rem] border border-[rgba(0,62,64,0.12)] bg-white p-5 shadow-soft sm:p-7">

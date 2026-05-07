@@ -6,7 +6,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Login admin | Dolmini Model",
+  title: "Login administrativo | Dolmini Model",
   description: "Acesso administrativo da Dolmini Model."
 };
 
@@ -37,13 +37,13 @@ export default async function LoginPage() {
             Acesso seguro ao painel da loja.
           </h1>
           <p className="mt-4 max-w-lg text-muted-foreground">
-            Entre com o usuario admin cadastrado no Supabase para gerenciar catalogo, imagens e pedidos.
+            Entrada controlada apenas para gestão da loja.
           </p>
         </section>
         <section className="rounded-lg border bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold">Login admin</h2>
+          <h2 className="text-xl font-semibold">Login administrativo</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Nao ha cadastro publico nesta loja.
+            Não há cadastro público nesta loja.
           </p>
           <div className="mt-6">
             <LoginForm />

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabase.auth.signInWithPassword(input);
 
     if (error || !data.user) {
-      throw new CommerceError("Email ou senha invalidos.", "invalid_credentials", 401);
+      throw new CommerceError("E-mail ou senha inválidos.", "invalid_credentials", 401);
     }
 
     const { data: profile, error: profileError } = await supabase
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     if (profileError || profile?.role !== "admin") {
       await supabase.auth.signOut();
-      throw new CommerceError("Usuario sem permissao admin.", "admin_permission_required", 403);
+      throw new CommerceError("Usuário sem permissão administrativa.", "admin_permission_required", 403);
     }
 
     return NextResponse.json(apiSuccess({ redirectTo: "/admin" }));

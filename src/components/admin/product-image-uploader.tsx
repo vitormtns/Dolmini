@@ -26,7 +26,7 @@ export function ProductImageUploader({ product }: { product: Product }) {
     setUploading(false);
 
     if (!response.ok || !body.success) {
-      setError(body.error ?? "Nao foi possivel enviar imagens.");
+      setError(body.error ?? "Não foi possível enviar imagens.");
       return;
     }
 
@@ -42,7 +42,7 @@ export function ProductImageUploader({ product }: { product: Product }) {
     });
     if (!response.ok) {
       const body = await response.json();
-      setError(body.error ?? "Nao foi possivel remover a imagem.");
+      setError(body.error ?? "Não foi possível remover a imagem.");
       return;
     }
     router.refresh();
@@ -56,7 +56,7 @@ export function ProductImageUploader({ product }: { product: Product }) {
     });
     if (!response.ok) {
       const body = await response.json();
-      setError(body.error ?? "Nao foi possivel definir imagem principal.");
+      setError(body.error ?? "Não foi possível definir a imagem principal.");
       return;
     }
     router.refresh();
@@ -67,7 +67,7 @@ export function ProductImageUploader({ product }: { product: Product }) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="font-semibold">Imagens</h2>
-          <p className="text-sm text-muted-foreground">JPEG, PNG ou WebP ate 5MB por imagem.</p>
+          <p className="text-sm text-muted-foreground">JPEG, PNG ou WebP até 5 MB por imagem.</p>
         </div>
         <label className="inline-flex cursor-pointer rounded-md border px-4 py-2 text-sm font-medium">
           {uploading ? "Enviando..." : "Enviar imagens"}

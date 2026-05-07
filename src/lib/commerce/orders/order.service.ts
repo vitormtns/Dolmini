@@ -15,7 +15,7 @@ export class OrderService {
 
   async getAdminById(id: string) {
     const order = await this.orders.findById(id);
-    if (!order) throw new CommerceError("Pedido nao encontrado.", "order_not_found", 404);
+    if (!order) throw new CommerceError("Pedido não encontrado.", "order_not_found", 404);
     return order;
   }
 
@@ -24,7 +24,7 @@ export class OrderService {
     const order = await this.orders.createPendingPayment(input.customer, validatedCart);
 
     if (!order) {
-      throw new CommerceError("Nao foi possivel criar o pedido.", "order_create_failed", 500);
+      throw new CommerceError("Não foi possível criar o pedido.", "order_create_failed", 500);
     }
 
     return order;

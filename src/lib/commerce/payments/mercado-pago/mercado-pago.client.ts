@@ -12,7 +12,7 @@ export class MercadoPagoClient {
   private get accessToken() {
     if (!env.MERCADO_PAGO_ACCESS_TOKEN) {
       throw new CommerceError(
-        "Checkout temporariamente indisponivel. Tente novamente mais tarde.",
+        "Checkout temporariamente indisponível. Tente novamente mais tarde.",
         "PAYMENT_PROVIDER_NOT_CONFIGURED",
         503
       );
@@ -51,7 +51,7 @@ export class MercadoPagoClient {
 
     if (!response.ok) {
       throw new CommerceError(
-        "Nao foi possivel consultar o pagamento no Mercado Pago.",
+        "Não foi possível consultar o pagamento no Mercado Pago.",
         "PAYMENT_PROVIDER_ERROR",
         502
       );

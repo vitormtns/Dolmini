@@ -9,14 +9,14 @@ export class InventoryService {
 
   assertAvailable(product: Product, quantity: number, variant?: ProductVariant | null) {
     if (product.status !== "active") {
-      throw new CommerceError(`Produto ${product.name} nao esta ativo.`, "PRODUCT_UNAVAILABLE");
+      throw new CommerceError(`Produto ${product.name} não está ativo.`, "PRODUCT_UNAVAILABLE");
     }
 
     const stock = variant ? variant.stockQuantity : product.stockQuantity;
     const status = variant ? variant.status : product.status;
 
     if (status !== "active") {
-      throw new CommerceError(`Variacao indisponivel para ${product.name}.`, "PRODUCT_UNAVAILABLE");
+      throw new CommerceError(`Variação indisponível para ${product.name}.`, "PRODUCT_UNAVAILABLE");
     }
 
     if (stock < quantity) {
@@ -29,7 +29,7 @@ export class InventoryService {
 
   async decrementForOrder(orderId: string) {
     if (!this.supabase) {
-      throw new CommerceError("Cliente de banco nao configurado.", "database_not_configured", 500);
+      throw new CommerceError("Cliente de banco não configurado.", "database_not_configured", 500);
     }
 
     const { data: order, error: orderError } = await this.supabase
@@ -38,7 +38,7 @@ export class InventoryService {
       .eq("id", orderId)
       .single();
 
-    if (orderError || !order) throw new CommerceError("Pedido nao encontrado.", "order_not_found", 404);
+    if (orderError || !order) throw new CommerceError("Pedido não encontrado.", "order_not_found", 404);
     if (order.stock_deducted_at) return;
 
     const { data: items, error: itemsError } = await this.supabase

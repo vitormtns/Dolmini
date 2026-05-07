@@ -6,7 +6,7 @@ import { Boxes, ClipboardList, FolderTree, LayoutDashboard, LogOut } from "lucid
 import { cn } from "@/lib/utils";
 
 const items = [
-  { href: "/admin", label: "Inicio", icon: LayoutDashboard },
+  { href: "/admin", label: "Início", icon: LayoutDashboard },
   { href: "/admin/produtos", label: "Produtos", icon: Boxes },
   { href: "/admin/categorias", label: "Categorias", icon: FolderTree },
   { href: "/admin/pedidos", label: "Pedidos", icon: ClipboardList }

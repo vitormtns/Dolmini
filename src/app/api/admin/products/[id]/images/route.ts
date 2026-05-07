@@ -32,7 +32,7 @@ export async function POST(request: Request, context: Context) {
 
     for (const [index, file] of files.entries()) {
       if (!allowedTypes.has(file.type)) {
-        throw new CommerceError("Tipo de imagem nao permitido.", "invalid_image_type", 400);
+        throw new CommerceError("Tipo de imagem não permitido.", "invalid_image_type", 400);
       }
 
       if (file.size > maxImageSize) {
@@ -50,7 +50,7 @@ export async function POST(request: Request, context: Context) {
 
       if (uploadError) {
         throw new CommerceError(
-          "Nao foi possivel enviar a imagem para o Storage.",
+          "Não foi possível enviar a imagem para o Storage.",
           "image_upload_failed",
           502
         );
@@ -105,7 +105,7 @@ export async function DELETE(request: Request, context: Context) {
       const { error: removeError } = await supabase.storage.from(bucket).remove([storagePath]);
       if (removeError) {
         throw new CommerceError(
-          "A imagem foi removida do produto, mas nao foi possivel remover o arquivo do Storage.",
+          "A imagem foi removida do produto, mas não foi possível remover o arquivo do Storage.",
           "image_storage_remove_failed",
           502
         );

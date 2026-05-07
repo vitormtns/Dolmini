@@ -23,7 +23,7 @@ export class MercadoPagoWebhookService {
     try {
       payload = JSON.parse(rawBody) as MercadoPagoWebhookPayload;
     } catch {
-      throw new CommerceError("Payload JSON invalido.", "invalid_webhook_payload", 400);
+      throw new CommerceError("Payload JSON inválido.", "invalid_webhook_payload", 400);
     }
     const url = new URL(requestUrl);
     const queryDataId = url.searchParams.get("data.id");
@@ -106,7 +106,7 @@ export class MercadoPagoWebhookService {
     if (!env.MERCADO_PAGO_WEBHOOK_SECRET) {
       if (isProduction) {
         throw new CommerceError(
-          "Secret do webhook Mercado Pago nao configurado.",
+          "Secret do webhook Mercado Pago não configurado.",
           "webhook_secret_missing",
           500
         );

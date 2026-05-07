@@ -29,7 +29,7 @@ export function LoginForm() {
         return;
       }
 
-      setError(body.error ?? "Nao foi possivel entrar.");
+      setError(body.error ?? "Não foi possível entrar.");
       return;
     }
 
@@ -45,7 +45,7 @@ export function LoginForm() {
         </div>
       ) : null}
       <label className="grid gap-2 text-sm font-medium">
-        Email
+        E-mail
         <input
           autoComplete="email"
           className="rounded-md border px-3 py-2"
@@ -71,7 +71,7 @@ export function LoginForm() {
         disabled={loading}
         type="submit"
       >
-        {loading ? "Entrando..." : "Entrar no admin"}
+        {loading ? "Entrando..." : "Entrar no painel"}
       </button>
     </form>
   );

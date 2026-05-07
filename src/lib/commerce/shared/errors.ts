@@ -30,7 +30,7 @@ export function toApiError(error: unknown) {
       body: {
         success: false,
         data: null,
-        error: "Dados invalidos.",
+        error: "Dados inválidos.",
         code: "validation_error",
         issues: error.issues.map((issue) => ({
           path: issue.path.join("."),
@@ -47,7 +47,7 @@ export function toApiError(error: unknown) {
     body: {
       success: false,
       data: null,
-      error: "Nao foi possivel concluir a operacao.",
+      error: "Não foi possível concluir a operação.",
       code: "internal_error"
     }
   };

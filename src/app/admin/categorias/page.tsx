@@ -13,7 +13,7 @@ export default async function CategoriesPage() {
     <>
       <AdminHeader
         title="Categorias"
-        description="Organize o catalogo sem quebrar produtos existentes."
+        description="Organize o catálogo sem quebrar produtos existentes."
       />
       <div className="grid gap-6">
         <CategoryForm />

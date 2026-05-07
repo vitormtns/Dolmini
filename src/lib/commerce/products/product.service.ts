@@ -17,14 +17,14 @@ export class ProductService {
   async getPublicBySlug(slug: string) {
     const product = await this.products.findBySlug(slug);
     if (!product || product.status !== "active") {
-      throw new CommerceError("Produto nao encontrado.", "product_not_found", 404);
+      throw new CommerceError("Produto não encontrado.", "product_not_found", 404);
     }
     return product;
   }
 
   async getAdminById(id: string) {
     const product = await this.products.findById(id);
-    if (!product) throw new CommerceError("Produto nao encontrado.", "product_not_found", 404);
+    if (!product) throw new CommerceError("Produto não encontrado.", "product_not_found", 404);
     return product;
   }
 
@@ -46,7 +46,7 @@ export class ProductService {
     }
 
     const product = await this.products.update(input);
-    if (!product) throw new CommerceError("Produto nao encontrado.", "product_not_found", 404);
+    if (!product) throw new CommerceError("Produto não encontrado.", "product_not_found", 404);
     return product;
   }
 

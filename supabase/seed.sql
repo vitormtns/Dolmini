@@ -1,12 +1,12 @@
--- Seed minimo para validar o fluxo real da Dolmini Model.
+-- Seed mínimo para validar o fluxo real da Dolmini Model.
 -- Rode este arquivo depois de supabase/schema.sql.
--- Nao cria usuario admin: o admin deve ser criado no Supabase Auth real.
+-- Não cria usuário admin: o admin deve ser criado no Supabase Auth real.
 
 insert into categories (name, slug, description, status, sort_order)
 values
-  ('Feminino', 'feminino', 'Selecao feminina da Dolmini Model.', 'active', 10),
+  ('Feminino', 'feminino', 'Seleção feminina da Dolmini Model.', 'active', 10),
   ('Jeans', 'jeans', 'Pecas jeans para o dia a dia.', 'active', 20),
-  ('Promocoes', 'promocoes', 'Produtos com condicoes promocionais.', 'active', 30)
+  ('Promoções', 'promocoes', 'Produtos com condições promocionais.', 'active', 30)
 on conflict (slug) do update
 set name = excluded.name,
     description = excluded.description,
@@ -49,22 +49,22 @@ values
     'Calca Jeans Reta',
     'calca-jeans-reta',
     'Jeans com modelagem reta e acabamento limpo.',
-    'Produto ativo com preco promocional para validar badges e total do checkout.',
+    'Produto ativo com preço promocional para validar badges e total do checkout.',
     219.90,
     189.90,
     5,
     'active',
     true,
     true,
-    'Calca Jeans Reta Dolmini',
-    'Calca jeans em promocao para teste do catalogo Dolmini Model.'
+    'Calça Jeans Reta Dolmini',
+    'Calça jeans em promoção para teste do catálogo Dolmini Model.'
   ),
   (
     (select id from categories where slug = 'promocoes'),
     'Vestido Promo Teste',
     'vestido-promo-teste',
     'Produto promocional ativo para validacao.',
-    'Item ativo usado para validar categoria de promocoes e fluxo de compra.',
+    'Item ativo usado para validar categoria de promoções e fluxo de compra.',
     179.90,
     149.90,
     3,
@@ -78,7 +78,7 @@ values
     (select id from categories where slug = 'feminino'),
     'Produto Rascunho Teste',
     'produto-rascunho-teste',
-    'Este produto nao deve aparecer publicamente.',
+    'Este produto não deve aparecer publicamente.',
     'Produto em draft para validar RLS/listagem publica.',
     99.90,
     null,
@@ -93,7 +93,7 @@ values
     (select id from categories where slug = 'jeans'),
     'Produto Esgotado Teste',
     'produto-esgotado-teste',
-    'Este produto nao aparece na vitrine publica atual.',
+    'Este produto não aparece na vitrine pública atual.',
     'Produto out_of_stock para validar status e filtros.',
     159.90,
     null,

@@ -35,7 +35,7 @@ export function OrderDetailCard({ order }: { order: Order }) {
     setSaving(false);
 
     if (!response.ok || !body.success) {
-      setError(body.error ?? "Nao foi possivel atualizar pedido.");
+      setError(body.error ?? "Não foi possível atualizar o pedido.");
       return;
     }
     router.refresh();
@@ -92,7 +92,7 @@ export function OrderDetailCard({ order }: { order: Order }) {
         </section>
 
         <section className="rounded-lg border bg-white p-5">
-          <h2 className="font-semibold">Operacao</h2>
+          <h2 className="font-semibold">Operação</h2>
           {error ? <p className="mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
           <label className="mt-4 grid gap-2 text-sm font-medium">
             Status do pedido
@@ -107,8 +107,8 @@ export function OrderDetailCard({ order }: { order: Order }) {
           </button>
           <div className="mt-5 space-y-1 border-t pt-4 text-xs text-muted-foreground">
             <p>Pagamento: {order.paymentStatus}</p>
-            <p>Mercado Pago payment id: {order.mercadoPagoPaymentId ?? "Nao informado"}</p>
-            <p>Estoque baixado: {order.stockDeductedAt ? formatDate(order.stockDeductedAt) : "Nao"}</p>
+            <p>ID do pagamento no Mercado Pago: {order.mercadoPagoPaymentId ?? "Não informado"}</p>
+            <p>Estoque baixado: {order.stockDeductedAt ? formatDate(order.stockDeductedAt) : "Não"}</p>
           </div>
         </section>
       </aside>

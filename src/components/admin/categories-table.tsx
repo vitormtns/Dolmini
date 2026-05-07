@@ -38,7 +38,7 @@ export function CategoriesTable({ categories }: { categories: Category[] }) {
     const body = await response.json();
 
     if (!response.ok || !body.success) {
-      setError(body.error ?? "Nao foi possivel salvar categoria.");
+      setError(body.error ?? "Não foi possível salvar a categoria.");
       return;
     }
 
@@ -61,7 +61,7 @@ export function CategoriesTable({ categories }: { categories: Category[] }) {
               <th className="px-4 py-3">Slug</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Ordem</th>
-              <th className="px-4 py-3 text-right">Acoes</th>
+              <th className="px-4 py-3 text-right">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y">

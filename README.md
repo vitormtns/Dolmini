@@ -1,33 +1,33 @@
 # Dolmini Model Commerce Core
 
-Base tecnica reutilizavel para e-commerce proprio em Next.js App Router, TypeScript, Supabase e Mercado Pago Checkout Pro. A primeira loja e a Dolmini Model, mas os modulos em `src/lib/commerce` foram separados para poder clonar/adaptar o core para outros pequenos negocios.
+Base técnica reutilizável para e-commerce próprio em Next.js App Router, TypeScript, Supabase e Mercado Pago Checkout Pro. A primeira loja é a Dolmini Model, mas os módulos em `src/lib/commerce` foram separados para poder clonar/adaptar o core para outros pequenos negócios.
 
 ## Status Atual
 
-Supabase real conectado e validado para o fluxo minimo da Dolmini Model:
+Supabase real conectado e validado para o fluxo mínimo da Dolmini Model:
 
 - `schema.sql` rodando no Supabase real;
 - `seed.sql` rodando no Supabase real;
-- usuario admin criado no Supabase Auth;
+- usuário admin criado no Supabase Auth;
 - profile admin em `profiles` com `role = admin`;
 - `.env.local` conectado ao Supabase real;
 - login em `/login` funcionando;
 - acesso a `/admin` funcionando;
 - banco real respondendo para admin e vitrine.
 
-Ainda depende de configuracao Mercado Pago:
+Ainda depende de configuração do Mercado Pago:
 
 - `MERCADO_PAGO_ACCESS_TOKEN`;
 - `MERCADO_PAGO_WEBHOOK_SECRET`;
-- `NEXT_PUBLIC_SITE_URL` com HTTPS publico para webhook/back URLs reais.
+- `NEXT_PUBLIC_SITE_URL` com HTTPS público para webhook/back URLs reais.
 
-Enquanto Mercado Pago nao estiver configurado, `POST /api/checkout` retorna erro limpo `PAYMENT_PROVIDER_NOT_CONFIGURED` e nao cria pedido.
+Enquanto o Mercado Pago não estiver configurado, `POST /api/checkout` retorna o erro limpo `PAYMENT_PROVIDER_NOT_CONFIGURED` e não cria pedido.
 
-## Principio Central
+## Princípio Central
 
-O frontend nunca e fonte da verdade para preco, estoque ou status de pagamento.
+O frontend nunca é fonte da verdade para preço, estoque ou status de pagamento.
 
-O carrinho publico envia apenas:
+O carrinho público envia apenas:
 
 ```json
 {
@@ -37,36 +37,36 @@ O carrinho publico envia apenas:
 }
 ```
 
-A API busca produtos/variacoes no banco, valida status e estoque, recalcula subtotal/desconto/frete/total e so entao cria pedido e preferencia de pagamento.
+A API busca produtos/variações no banco, valida status e estoque, recalcula subtotal/desconto/frete/total e só então cria pedido e preferência de pagamento.
 
 ## Estrutura
 
 ```txt
 src/lib/commerce/
   products/        tipos, schemas, repository e service de produtos
-  categories/      categorias publicas/admin
-  cart/            validacao server-side do carrinho
-  pricing/         calculo centralizado de preco
-  inventory/       validacao e baixa idempotente de estoque
-  orders/          criacao de pedidos e snapshots de itens
-  payments/        camada generica de pagamento
+  categories/      categorias públicas/admin
+  cart/            validação server-side do carrinho
+  pricing/         cálculo centralizado de preço
+  inventory/       validação e baixa idempotente de estoque
+  orders/          criação de pedidos e snapshots de itens
+  payments/        camada genérica de pagamento
     mercado-pago/  client, service e webhook do Mercado Pago
 ```
 
 Rotas principais:
 
 - `GET /login`: login do admin com Supabase Auth.
-- `GET|POST /logout`: encerra a sessao e redireciona para login.
-- `GET /acesso-negado`: feedback para usuario autenticado sem role admin.
+- `GET|POST /logout`: encerra a sessão e redireciona para login.
+- `GET /acesso-negado`: feedback para usuário autenticado sem role admin.
 - `GET /admin`: painel admin protegido por Supabase Auth + `profiles.role = admin`.
-- `GET /admin/produtos`: gestao de catalogo.
-- `GET /admin/categorias`: gestao de categorias.
+- `GET /admin/produtos`: gestão de catálogo.
+- `GET /admin/categorias`: gestão de categorias.
 - `GET /admin/pedidos`: acompanhamento de pedidos.
 - `GET /api/products`: lista produtos ativos.
 - `GET /api/categories`: lista categorias ativas.
-- `POST /api/cart/validate`: valida carrinho no servidor sem confiar em preco do client.
-- `POST /api/checkout`: valida carrinho, cria pedido `pending_payment`, cria preferencia Mercado Pago e retorna checkout URL.
-- `POST /api/webhooks/mercado-pago`: registra evento, aplica idempotencia, consulta pagamento na API do Mercado Pago, valida valor e atualiza pedido/estoque.
+- `POST /api/cart/validate`: valida carrinho no servidor sem confiar em preço do client.
+- `POST /api/checkout`: valida carrinho, cria pedido `pending_payment`, cria preferência Mercado Pago e retorna checkout URL.
+- `POST /api/webhooks/mercado-pago`: registra evento, aplica idempotência, consulta pagamento na API do Mercado Pago, valida valor e atualiza pedido/estoque.
 - `GET|POST|PATCH|DELETE /api/admin/products`: exige profile `admin`.
 - `GET|PATCH /api/admin/orders`: exige profile `admin`.
 
@@ -118,25 +118,25 @@ O helper `src/lib/env.ts` importa `server-only`, entao imports acidentais de sec
 4. Copie `service_role` para `SUPABASE_SERVICE_ROLE_KEY`.
 5. No SQL Editor do Supabase, rode o conteudo de `supabase/schema.sql`.
 6. Depois rode `supabase/seed.sql` para criar categorias e produtos de teste.
-7. O `schema.sql` cria o bucket `product-images` e policies basicas de Storage.
-8. Confirme no painel Storage se o bucket existe e esta publico para leitura.
+7. O `schema.sql` cria o bucket `product-images` e policies básicas de Storage.
+8. Confirme no painel Storage se o bucket existe e está público para leitura.
 
-Para teste local do admin, catalogo e checkout ate a criacao de preferencia:
+Para teste local do admin, catálogo e checkout até a criação de preferência:
 
 ```env
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-Para teste real de Mercado Pago com `back_urls` e webhook, use HTTPS publico:
+Para teste real de Mercado Pago com `back_urls` e webhook, use HTTPS público:
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://sua-url-publica.example
 ```
 
-## Como Criar Usuario Admin
+## Como Criar Usuário Admin
 
-1. Crie um usuario pelo Supabase Auth.
-2. Pegue o `id` do usuario criado.
+1. Crie um usuário pelo Supabase Auth.
+2. Pegue o `id` do usuário criado.
 3. Insira ou atualize o profile:
 
 ```sql
@@ -149,21 +149,21 @@ set email = excluded.email,
     role = excluded.role;
 ```
 
-As rotas admin validam a sessao via Supabase Auth e depois exigem `profiles.role = 'admin'`.
+As rotas admin validam a sessão via Supabase Auth e depois exigem `profiles.role = 'admin'`.
 
 ## Fluxo de Login Admin
 
 1. Acesse `/login`.
-2. Entre com email e senha de um usuario criado no Supabase Auth.
+2. Entre com e-mail e senha de um usuário criado no Supabase Auth.
 3. A rota `/api/auth/login` autentica com Supabase Auth.
 4. Depois do login, o servidor consulta `profiles.role`.
-5. Se `role = admin`, o usuario e redirecionado para `/admin`.
-6. Se nao for admin, a sessao e encerrada e o usuario vai para `/acesso-negado`.
-7. O botao `Sair` no admin chama `/logout` e encerra a sessao.
+5. Se `role = admin`, o usuário é redirecionado para `/admin`.
+6. Se não for admin, a sessão é encerrada e o usuário vai para `/acesso-negado`.
+7. O botão `Sair` no admin chama `/logout` e encerra a sessão.
 
-Nao existe cadastro publico nesta etapa.
+Não existe cadastro público nesta etapa.
 
-## Admin Minimo
+## Admin Mínimo
 
 O admin fica em:
 
@@ -181,18 +181,18 @@ Funcionalidades atuais:
 
 - listar, criar, editar e arquivar produtos;
 - alterar status `draft`, `active`, `archived`, `out_of_stock`;
-- editar preco normal, preco promocional, estoque, destaque, promocao e SEO;
-- validar slug unico de produto e categoria;
+- editar preço normal, preço promocional, estoque, destaque, promoção e SEO;
+- validar slug único de produto e categoria;
 - listar, criar e editar categorias;
 - ativar/desativar categorias sem remover produtos existentes;
-- upload multiplo de imagens de produto via servidor;
+- upload múltiplo de imagens de produto via servidor;
 - definir imagem principal;
 - remover imagem do produto e do Storage;
 - listar pedidos e filtrar por status;
 - ver detalhe de pedido;
 - atualizar apenas status operacional do pedido.
 
-O admin nao permite marcar pagamento como aprovado manualmente. `payment_status = approved` continua sendo responsabilidade do webhook Mercado Pago.
+O admin não permite marcar pagamento como aprovado manualmente. `payment_status = approved` continua sendo responsabilidade do webhook Mercado Pago.
 
 ## Rotas Publicas da Loja
 
@@ -208,21 +208,21 @@ O admin nao permite marcar pagamento como aprovado manualmente. `payment_status 
 /checkout/erro
 ```
 
-A vitrine publica consome o Commerce Core:
+A vitrine pública consome o Commerce Core:
 
-- home exibe hero, produtos em destaque, promocoes, categorias e beneficios;
+- home exibe hero, produtos em destaque, promoções, categorias e benefícios;
 - `/produtos` exibe grid de produtos ativos com busca simples e filtro por categoria;
-- `/produtos/[slug]` exibe galeria, descricao, preco, estoque, categoria e CTA temporario de WhatsApp;
+- `/produtos/[slug]` exibe galeria, descrição, preço, estoque, categoria e CTA temporário de WhatsApp;
 - `/categoria/[slug]` exibe categoria ativa e seus produtos ativos.
 
 Regras atuais da vitrine:
 
-- produtos `draft` e `archived` nao aparecem;
-- categorias inativas nao aparecem;
-- produtos `out_of_stock` nao aparecem na listagem publica porque `listPublic()` filtra `status = active`;
-- o badge "Esgotado" fica pendente ate decidirmos se produto esgotado deve continuar publico.
+- produtos `draft` e `archived` não aparecem;
+- categorias inativas não aparecem;
+- produtos `out_of_stock` não aparecem na listagem pública porque `listPublic()` filtra `status = active`;
+- o badge "Esgotado" fica pendente até decidirmos se produto esgotado deve continuar público.
 
-## Carrinho Publico
+## Carrinho Público
 
 O carrinho fica em `localStorage` e guarda apenas:
 
@@ -234,32 +234,32 @@ O carrinho fica em `localStorage` e guarda apenas:
 }
 ```
 
-O frontend nao salva nem envia preco como fonte da verdade. Ao abrir `/carrinho` ou `/checkout`, a UI chama:
+O frontend não salva nem envia preço como fonte da verdade. Ao abrir `/carrinho` ou `/checkout`, a UI chama:
 
 ```txt
 POST /api/cart/validate
 ```
 
-Essa rota usa o Commerce Core para buscar produtos no banco, validar status/estoque e recalcular subtotal, desconto, frete e total. O resumo exibido no carrinho e apenas visual; o checkout recalcula novamente.
+Essa rota usa o Commerce Core para buscar produtos no banco, validar status/estoque e recalcular subtotal, desconto, frete e total. O resumo exibido no carrinho é apenas visual; o checkout recalcula novamente.
 
 ## Checkout Mercado Pago Sandbox
 
 Fluxo atual:
 
-1. Cliente adiciona produto publico ao carrinho.
+1. Cliente adiciona produto público ao carrinho.
 2. `/carrinho` valida itens no servidor.
-3. `/checkout` coleta dados do cliente e endereco.
+3. `/checkout` coleta dados do cliente e endereço.
 4. O frontend envia para `POST /api/checkout`:
    - itens do carrinho com `productId`, `variantId`, `quantity`;
    - dados do cliente;
-   - endereco.
+   - endereço.
 5. A API valida tudo no servidor.
 6. A API cria `customers`, `orders` com `status = pending_payment` e `payment_status = pending`.
-7. A API cria preferencia Mercado Pago Checkout Pro.
+7. A API cria preferência Mercado Pago Checkout Pro.
 8. A API salva `mercado_pago_preference_id`.
 9. O frontend redireciona para `checkout.checkoutUrl`.
 
-Estoque nao baixa na criacao do pedido. Estoque so baixa no webhook quando o Mercado Pago confirmar pagamento `approved`.
+Estoque não baixa na criação do pedido. Estoque só baixa no webhook quando o Mercado Pago confirmar pagamento `approved`.
 
 Para testar em sandbox:
 
@@ -287,25 +287,25 @@ ${NEXT_PUBLIC_SITE_URL}/api/webhooks/mercado-pago
 Avisos importantes:
 
 - Mercado Pago pode rejeitar ou limitar URLs `localhost` em fluxos reais.
-- Use HTTPS publico para testar `back_urls` e webhook de ponta a ponta.
-- A pagina `/checkout/sucesso` nao aprova pagamento.
-- A aprovacao real do pedido depende da consulta ao Mercado Pago dentro do webhook.
+- Use HTTPS público para testar `back_urls` e webhook de ponta a ponta.
+- A página `/checkout/sucesso` não aprova pagamento.
+- A aprovação real do pedido depende da consulta ao Mercado Pago dentro do webhook.
 
 ## Testar Produto do Admin na Loja
 
-1. Entre em `/login` com um usuario admin.
+1. Entre em `/login` com um usuário admin.
 2. Crie uma categoria em `/admin/categorias` e marque como `active`.
 3. Crie um produto em `/admin/produtos/novo`.
-4. Preencha nome, slug, categoria, preco e estoque.
+4. Preencha nome, slug, categoria, preço e estoque.
 5. Marque status `active`.
-6. Opcionalmente marque `Destaque` ou `Promocao`.
+6. Opcionalmente marque `Destaque` ou `Promoção`.
 7. Salve e envie imagens em `/admin/produtos/[id]/editar`.
 8. Abra `/`, `/produtos` ou `/categoria/[slug]`.
 9. O produto deve aparecer automaticamente se estiver ativo.
 
 ## Banco e RLS
 
-O SQL inicial esta em `supabase/schema.sql` e cria:
+O SQL inicial está em `supabase/schema.sql` e cria:
 
 - `profiles`
 - `categories`
@@ -319,20 +319,20 @@ O SQL inicial esta em `supabase/schema.sql` e cria:
 - `payment_events`
 - `store_settings`
 
-Tambem inclui enums, indices, triggers de `updated_at`, funcoes `decrement_product_stock` e `decrement_variant_stock`, alem de RLS basico:
+Também inclui enums, índices, triggers de `updated_at`, funções `decrement_product_stock` e `decrement_variant_stock`, além de RLS básico:
 
 - Produtos ativos podem ser lidos publicamente.
 - Categorias ativas podem ser lidas publicamente.
 - Banners ativos podem ser lidos publicamente.
-- Admin gerencia catalogo, pedidos, eventos e configuracoes.
-- Pedidos, clientes e eventos nao possuem policy publica de escrita direta pelo client.
+- Admin gerencia catálogo, pedidos, eventos e configurações.
+- Pedidos, clientes e eventos não possuem policy pública de escrita direta pelo client.
 - Checkout e webhook escrevem pelo servidor usando service role.
 
-Pedidos possuem `stock_deducted_at` para garantir que estoque nao seja baixado duas vezes. Tambem possuem `total_cents` gerado no banco para comparacao financeira sem depender de ponto flutuante.
+Pedidos possuem `stock_deducted_at` para garantir que estoque não seja baixado duas vezes. Também possuem `total_cents` gerado no banco para comparação financeira sem depender de ponto flutuante.
 
 ## Storage de Imagens
 
-Bucket sugerido e usado pelo codigo:
+Bucket sugerido e usado pelo código:
 
 ```txt
 product-images
@@ -413,7 +413,7 @@ O webhook:
 4. Abra `/carrinho`.
 5. Confirme que o carrinho foi validado pelo servidor.
 6. Abra `/checkout`.
-7. Preencha cliente e endereco.
+7. Preencha cliente e endereço.
 8. Clique em `Finalizar compra`.
 9. O navegador deve redirecionar para o Mercado Pago.
 
@@ -438,7 +438,7 @@ Content-Type: application/json
     "document": null,
     "address": {
       "line1": "Rua Teste, 123",
-      "city": "Sao Paulo",
+      "city": "São Paulo",
       "state": "SP",
       "postalCode": "01001000",
       "country": "BR"
@@ -449,22 +449,22 @@ Content-Type: application/json
 
 No fluxo real, a resposta retorna `data.checkout.checkoutUrl`.
 
-Complete o pagamento no sandbox e confirme em `orders` que, apos o webhook:
+Complete o pagamento no sandbox e confirme em `orders` que, após o webhook:
 
 - `payment_status` mudou para `approved`;
 - `status` mudou para `paid`;
 - `stock_deducted_at` foi preenchido.
 
-## Checklist de Validacao Supabase Real
+## Checklist de Validação Supabase Real
 
 ### A. Banco/Auth
 
 - Criar projeto no Supabase.
 - Rodar `supabase/schema.sql` no SQL Editor.
 - Rodar `supabase/seed.sql` no SQL Editor.
-- Criar usuario admin em Authentication > Users.
-- Copiar o UUID do usuario Auth.
-- Inserir profile admin em `profiles` usando `full_name`, nao `name`:
+- Criar usuário admin em Authentication > Users.
+- Copiar o UUID do usuário Auth.
+- Inserir profile admin em `profiles` usando `full_name`, não `name`:
 
 ```sql
 insert into profiles (id, email, full_name, role)
@@ -515,19 +515,19 @@ MERCADO_PAGO_WEBHOOK_SECRET=SEU_WEBHOOK_SECRET
 - Conferir se a imagem aparece na vitrine.
 - Conferir no bucket `product-images` se o arquivo foi criado/removido.
 
-### D. Loja Publica
+### D. Loja Pública
 
 - Abrir `/`.
 - Abrir `/produtos`.
 - Abrir `/produtos/[slug]`.
 - Abrir `/categoria/[slug]`.
-- Confirmar que produtos `draft` e `archived` nao aparecem.
-- Confirmar que categorias inativas nao aparecem.
+- Confirmar que produtos `draft` e `archived` não aparecem.
+- Confirmar que categorias inativas não aparecem.
 
 ### E. Carrinho/Checkout
 
 - Adicionar produto ativo ao carrinho.
-- Abrir `/carrinho` e confirmar validacao server-side.
+- Abrir `/carrinho` e confirmar validação server-side.
 - Abrir `/checkout`.
 - Finalizar pedido.
 - Confirmar em `orders`:
@@ -536,11 +536,11 @@ MERCADO_PAGO_WEBHOOK_SECRET=SEU_WEBHOOK_SECRET
   - `mercado_pago_preference_id` preenchido.
 - Confirmar em `order_items` que os itens foram salvos.
 - Confirmar que `stock_deducted_at` continua nulo antes do pagamento aprovado.
-- Confirmar que o estoque ainda nao baixou antes do webhook aprovado.
+- Confirmar que o estoque ainda não baixou antes do webhook aprovado.
 
 ### F. Mercado Pago
 
-- Confirmar que a preferencia foi criada.
+- Confirmar que a preferência foi criada.
 - Confirmar redirecionamento para Mercado Pago.
 - Confirmar `external_reference = order.order_number`.
 - Confirmar `back_urls`:
@@ -548,10 +548,10 @@ MERCADO_PAGO_WEBHOOK_SECRET=SEU_WEBHOOK_SECRET
   - `/checkout/pendente`;
   - `/checkout/erro`.
 - Confirmar `notification_url = ${NEXT_PUBLIC_SITE_URL}/api/webhooks/mercado-pago`.
-- Para teste real de webhook, trocar `NEXT_PUBLIC_SITE_URL` para HTTPS publico e reiniciar o app.
-- Lembrar que a pagina de sucesso nao aprova o pedido; aprovacao depende do webhook.
+- Para teste real de webhook, trocar `NEXT_PUBLIC_SITE_URL` para HTTPS público e reiniciar o app.
+- Lembrar que a página de sucesso não aprova o pedido; aprovação depende do webhook.
 
-## Checklist de Regressao Rapida
+## Checklist de Regressão Rápida
 
 - Login:
   - acessar `/login`;
@@ -568,9 +568,9 @@ MERCADO_PAGO_WEBHOOK_SECRET=SEU_WEBHOOK_SECRET
 - Produto:
   - confirmar produto ativo na vitrine;
   - confirmar `draft` e `archived` fora da vitrine;
-  - confirmar `out_of_stock` fora da vitrine publica atual.
+  - confirmar `out_of_stock` fora da vitrine pública atual.
 - Imagem:
-  - enviar imagem JPEG/PNG/WebP ate 5MB;
+  - enviar imagem JPEG/PNG/WebP até 5 MB;
   - definir principal;
   - remover imagem;
   - confirmar arquivo no bucket `product-images`.
@@ -584,15 +584,15 @@ MERCADO_PAGO_WEBHOOK_SECRET=SEU_WEBHOOK_SECRET
   - alterar quantidade;
   - remover item;
   - validar `/carrinho`;
-  - confirmar mensagem amigavel se produto ficar indisponivel.
+  - confirmar mensagem amigável se produto ficar indisponível.
 - Checkout sem Mercado Pago:
   - abrir `/checkout`;
   - preencher dados;
   - finalizar;
-  - confirmar mensagem "Checkout temporariamente indisponivel";
+  - confirmar mensagem "Checkout temporariamente indisponível";
   - confirmar que nenhum pedido novo foi criado por falta de `MERCADO_PAGO_ACCESS_TOKEN`.
 
-## Comandos de Validacao
+## Comandos de Validação
 
 ```bash
 npm install
@@ -601,18 +601,18 @@ npm run build
 npm audit
 ```
 
-## Checklist Antes de Producao
+## Checklist Antes de Produção
 
 - Rodar `npm audit` sem vulnerabilidades.
 - Rodar `npm run typecheck` e `npm run build`.
 - Confirmar `NODE_ENV=production` no deploy.
-- Confirmar que nenhuma secret esta exposta como `NEXT_PUBLIC_`.
+- Confirmar que nenhuma secret está exposta como `NEXT_PUBLIC_`.
 - Testar webhook com assinatura real do Mercado Pago.
-- Testar idempotencia reenviando o mesmo evento.
-- Testar divergencia de valor e garantir que pedido nao aprova.
+- Testar idempotência reenviando o mesmo evento.
+- Testar divergência de valor e garantir que pedido não aprova.
 - Testar estoque insuficiente no checkout e no webhook.
 - Configurar policies do Supabase Storage.
-- Testar upload, remocao e definicao de imagem principal no bucket `product-images`.
-- Revisar expiracao/sessao do admin e fluxo de login.
+- Testar upload, remoção e definição de imagem principal no bucket `product-images`.
+- Revisar expiração/sessão do admin e fluxo de login.
 - Adicionar backups e observabilidade de erros.
 - Adicionar testes automatizados para carrinho, pricing, webhook e estoque.

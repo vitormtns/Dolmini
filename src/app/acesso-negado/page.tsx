@@ -12,9 +12,9 @@ export default function AccessDeniedPage() {
         <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
           Acesso negado
         </p>
-        <h1 className="mt-3 text-2xl font-semibold">Usuario sem permissao admin</h1>
+        <h1 className="mt-3 text-2xl font-semibold">Usuário sem permissão administrativa</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          A sessao foi encerrada. Entre com uma conta que tenha role admin em `profiles`.
+          A sessão foi encerrada. Entre com uma conta que tenha a função de admin em `profiles`.
         </p>
         <Link className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground" href="/login">
           Voltar ao login

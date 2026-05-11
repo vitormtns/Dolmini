@@ -105,14 +105,14 @@ export function CheckoutForm() {
     window.location.href = body.data.checkout.checkoutUrl;
   }
 
-  const inputClass = "min-h-12 rounded-[0.85rem] border border-primary/10 bg-[#F8F4EF] px-4 py-2 text-sm text-[#102224]";
+  const inputClass = "min-h-12 min-w-0 rounded-[0.85rem] border border-primary/10 bg-[#F8F4EF] px-4 py-2 text-sm text-[#102224]";
 
   return (
-    <form className="grid gap-6 rounded-[1.5rem] border border-primary/10 bg-white p-5 shadow-soft sm:p-6" onSubmit={submit}>
+    <form className="grid gap-5 rounded-[1.1rem] border border-primary/10 bg-white p-4 shadow-soft sm:gap-6 sm:rounded-[1.5rem] sm:p-6" onSubmit={submit}>
       {error ? <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Dados</p>
-        <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-primary">Dados pessoais</h2>
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent sm:tracking-[0.18em]">Dados</p>
+        <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">Dados pessoais</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
@@ -132,9 +132,9 @@ export function CheckoutForm() {
           <input className={inputClass} value={form.document} onChange={(event) => update("document", event.target.value)} />
         </label>
       </div>
-      <div className="border-t pt-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Entrega</p>
-        <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-primary">Endere&ccedil;o de entrega</h2>
+      <div className="border-t pt-5 sm:pt-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent sm:tracking-[0.18em]">Entrega</p>
+        <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">Endereço de entrega</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
@@ -142,11 +142,11 @@ export function CheckoutForm() {
           <input className={inputClass} value={form.postalCode} onChange={(event) => update("postalCode", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Endere&ccedil;o
+          Endereço
           <input className={inputClass} value={form.line1} onChange={(event) => update("line1", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          N&uacute;mero
+          Número
           <input className={inputClass} value={form.number} onChange={(event) => update("number", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
@@ -166,11 +166,11 @@ export function CheckoutForm() {
           <input className={inputClass} value={form.state} onChange={(event) => update("state", event.target.value)} />
         </label>
       </div>
-      <div className="border-t pt-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Pagamento</p>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">O checkout valida seu carrinho antes de encaminhar para o provedor configurado. Sem Mercado Pago configurado, o erro &eacute; controlado e nenhum pedido &eacute; aprovado pela URL.</p>
+      <div className="border-t pt-5 sm:pt-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent sm:tracking-[0.18em]">Pagamento</p>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">O checkout valida seu carrinho antes de encaminhar para o provedor configurado. Sem Mercado Pago configurado, o erro é controlado e nenhum pedido é aprovado pela URL.</p>
       </div>
-      <button className="min-h-12 rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F] disabled:opacity-60" disabled={loading} type="submit">
+      <button className="min-h-12 rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F] disabled:opacity-60 sm:tracking-[0.1em]" disabled={loading} type="submit">
         {loading ? "Criando pagamento..." : "Finalizar compra"}
       </button>
     </form>

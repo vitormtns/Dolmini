@@ -13,16 +13,16 @@ export function CheckoutSummary() {
   }, [items.length]);
 
   return (
-    <aside className="rounded-[1.5rem] border border-primary/10 bg-white p-6 shadow-lift lg:sticky lg:top-32 lg:self-start">
-      <h2 className="text-3xl font-extrabold tracking-tight text-primary">Resumo do pedido</h2>
+    <aside className="rounded-[1.1rem] border border-primary/10 bg-white p-5 shadow-lift sm:rounded-[1.5rem] sm:p-6 lg:sticky lg:top-32 lg:self-start">
+      <h2 className="text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">Resumo do pedido</h2>
       <p className="mt-1 text-xs text-muted-foreground">
         Recalculado pelo servidor antes do pagamento.
       </p>
       <div className="mt-5 grid gap-3">
         {validatedCart?.items.map((item) => (
           <div className="flex justify-between gap-4 text-sm" key={`${item.productId}-${item.variantId ?? "base"}`}>
-            <div>
-            <p className="font-bold text-primary">{item.name}</p>
+            <div className="min-w-0">
+              <p className="font-bold text-primary">{item.name}</p>
               <p className="text-muted-foreground">Qtd. {item.quantity}</p>
             </div>
             <p className="font-extrabold text-primary">{formatCurrency(item.subtotal)}</p>

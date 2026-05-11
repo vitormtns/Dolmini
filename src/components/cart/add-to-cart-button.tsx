@@ -23,10 +23,10 @@ export function AddToCartButton({
 
   return (
     <div className="grid gap-3 sm:max-w-md">
-      <div className="flex gap-3">
+      <div className="grid gap-3 min-[390px]:grid-cols-[auto_1fr]">
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <button
-          className="min-h-12 flex-1 rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F] disabled:cursor-not-allowed disabled:opacity-60"
+          className="min-h-12 rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-primary-foreground shadow-lift transition-colors hover:bg-[#002D2F] disabled:cursor-not-allowed disabled:opacity-60 sm:tracking-[0.1em]"
           disabled={disabled}
           onClick={add}
           type="button"

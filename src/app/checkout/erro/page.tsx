@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function CheckoutErrorPage() {
   return (
     <StorefrontShell>
-      <main className="px-4 py-16">
+      <main className="px-4 py-10 sm:py-16">
         <CheckoutStatusCard
           tone="danger"
           title="Pagamento n\u00e3o conclu\u00eddo"

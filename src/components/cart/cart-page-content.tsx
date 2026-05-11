@@ -17,7 +17,7 @@ export function CartPageContent() {
   if (items.length === 0) return <EmptyCart />;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+    <div className="grid gap-5 sm:gap-6 lg:grid-cols-[1fr_380px]">
       <section className="grid gap-3">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-white px-4 py-3 shadow-soft">
           <p className="text-sm font-medium text-muted-foreground">
@@ -27,7 +27,7 @@ export function CartPageContent() {
                 ? "Algum item precisa de revis\u00e3o antes do checkout."
                 : "Revise os itens antes de finalizar."}
           </p>
-          <button className="text-sm font-medium text-red-700" onClick={clearCart} type="button">
+          <button className="min-h-10 text-sm font-medium text-red-700" onClick={clearCart} type="button">
             Limpar carrinho
           </button>
         </div>

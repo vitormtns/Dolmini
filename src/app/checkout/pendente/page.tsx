@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function CheckoutPendingPage() {
   return (
     <StorefrontShell>
-      <main className="px-4 py-16">
+      <main className="px-4 py-10 sm:py-16">
         <CheckoutStatusCard
           tone="warning"
           title="Pagamento pendente"

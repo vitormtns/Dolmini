@@ -22,17 +22,17 @@ export function CheckoutStatusCard({
   const iconColor = tone === "success" ? "text-emerald-600" : tone === "danger" ? "text-red-600" : tone === "warning" ? "text-amber-600" : "text-accent";
 
   return (
-    <section className={`mx-auto max-w-xl rounded-[2rem] border p-8 text-center shadow-lift ${color}`}>
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-background">
-        <Icon className={`h-7 w-7 ${iconColor}`} />
+    <section className={`mx-auto max-w-xl rounded-[1.2rem] border p-5 text-center shadow-lift sm:rounded-[2rem] sm:p-8 ${color}`}>
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-background sm:h-16 sm:w-16">
+        <Icon className={`h-6 w-6 sm:h-7 sm:w-7 ${iconColor}`} />
       </div>
-      <h1 className="mt-5 text-4xl font-extrabold leading-[1.02] tracking-tight text-primary sm:text-5xl">{title}</h1>
+      <h1 className="mt-5 text-[clamp(2rem,9vw,2.75rem)] font-extrabold leading-[1.04] tracking-tight text-primary sm:text-5xl">{title}</h1>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <Link className="inline-flex min-h-12 items-center rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-primary-foreground transition-colors hover:bg-[#002D2F]" href="/produtos">
+      <div className="mx-auto mt-6 grid max-w-xs grid-cols-1 justify-center gap-3 sm:flex sm:max-w-none sm:flex-wrap">
+        <Link className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-primary-foreground transition-colors hover:bg-[#002D2F] sm:tracking-[0.1em]" href="/produtos">
           Ver produtos
         </Link>
-        <Link className="inline-flex min-h-12 items-center rounded-full border bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] transition-colors hover:bg-muted" href="/carrinho">
+        <Link className="inline-flex min-h-12 items-center justify-center rounded-full border bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.08em] transition-colors hover:bg-muted sm:tracking-[0.1em]" href="/carrinho">
           Voltar ao carrinho
         </Link>
       </div>

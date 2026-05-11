@@ -17,9 +17,9 @@ export function ProductGalleryClient({ images, productName }: ProductGalleryClie
   const activeImage = availableImages.find((image) => image.id === activeImageId) ?? availableImages[0] ?? null;
 
   return (
-    <section className="grid gap-3">
+    <section className="grid min-w-0 gap-3">
       <div
-        className="group relative aspect-[4/5] overflow-hidden rounded-[1.4rem] border border-[rgba(0,62,64,0.12)] bg-[#EFE7DC] shadow-lift"
+        className="group relative aspect-[4/5] overflow-hidden rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-[#EFE7DC] shadow-lift sm:rounded-[1.4rem]"
         onMouseLeave={() => setOrigin("50% 50%")}
         onMouseMove={(event) => {
           const rect = event.currentTarget.getBoundingClientRect();
@@ -42,7 +42,7 @@ export function ProductGalleryClient({ images, productName }: ProductGalleryClie
       </div>
 
       {availableImages.length > 1 ? (
-        <div className="hide-scrollbar flex gap-3 overflow-x-auto pb-1">
+        <div className="hide-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:gap-3 sm:px-0">
           {availableImages.map((image, index) => {
             const active = image.id === activeImage?.id;
 
@@ -51,7 +51,7 @@ export function ProductGalleryClient({ images, productName }: ProductGalleryClie
                 aria-label={`Ver imagem ${index + 1} do produto`}
                 aria-pressed={active}
                 className={cn(
-                  "relative h-20 w-20 shrink-0 overflow-hidden rounded-[0.9rem] border bg-[#EFE7DC] transition sm:h-24 sm:w-24",
+                  "relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[0.75rem] border bg-[#EFE7DC] transition sm:h-24 sm:w-24 sm:rounded-[0.9rem]",
                   active
                     ? "border-[#003E40] opacity-100 shadow-[0_12px_32px_rgba(0,62,64,0.18)] ring-2 ring-[#00A7A7]/45"
                     : "border-[rgba(0,62,64,0.12)] opacity-70 hover:border-[#00A7A7] hover:opacity-100"

@@ -110,15 +110,13 @@ export default async function HomePage() {
     <StorefrontShell>
       <main>
         <section className="overflow-x-clip bg-[#F8F4EF]">
-          <div>
-            <HeroShowcaseCarousel slides={heroSlides} />
-          </div>
+          <HeroShowcaseCarousel slides={heroSlides} />
         </section>
 
         <CampaignCarousel featured={heroProducts} promotions={promotionProducts} jeansHref={jeansHref} />
         <CategoryShowcase categories={categories} />
 
-        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
           <SectionHeading
             eyebrow="Vitrine da semana"
             title="Peças selecionadas para entrar no seu radar."
@@ -131,7 +129,7 @@ export default async function HomePage() {
 
         <PromoBanner product={(jeansProducts.length ? jeansProducts : weeklyProducts)[0]} href={jeansHref} />
 
-        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
           <SectionHeading
             eyebrow="Promoções selecionadas"
             title="Achados com preço especial"
@@ -142,7 +140,7 @@ export default async function HomePage() {
           {promotionProducts.length ? (
             <ProductGrid products={promotionProducts.slice(0, 4)} />
           ) : (
-            <div className="rounded-[1.4rem] border border-dashed border-[rgba(0,62,64,0.2)] bg-white p-10 text-center shadow-soft">
+            <div className="rounded-[1rem] border border-dashed border-[rgba(0,62,64,0.2)] bg-white p-6 text-center shadow-soft sm:rounded-[1.4rem] sm:p-10">
               <h3 className="text-2xl font-extrabold tracking-tight text-[#003E40]">Novas promoções em breve</h3>
               <p className="mt-2 text-sm text-[#6B7A7C]">A vitrine será atualizada assim que houver ofertas ativas.</p>
             </div>
@@ -152,16 +150,16 @@ export default async function HomePage() {
         <TrustStrip />
 
         <section className="store-gradient">
-          <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6">
-            <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#00A7A7]">Dolmini Model</p>
-            <h2 className="mt-3 text-4xl font-extrabold leading-[1.02] tracking-tight text-[#003E40] sm:text-6xl">
+          <div className="mx-auto max-w-5xl px-4 py-12 text-center sm:px-6 sm:py-16">
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#00A7A7] sm:tracking-[0.22em]">Dolmini Model</p>
+            <h2 className="mt-3 text-[clamp(2rem,9vw,3rem)] font-extrabold leading-[1.04] tracking-tight text-[#003E40] sm:text-6xl">
               Monte sua próxima combinação com a Dolmini
             </h2>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a className="inline-flex min-h-12 items-center rounded-full bg-[#003E40] px-7 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lift hover:bg-[#002D2F]" href="/produtos">
+            <div className="mx-auto mt-7 grid max-w-xs grid-cols-1 justify-center gap-3 sm:mt-8 sm:flex sm:max-w-none sm:flex-wrap">
+              <a className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#003E40] px-6 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-white shadow-lift hover:bg-[#002D2F] sm:px-7 sm:py-4 sm:tracking-[0.12em]" href="/produtos">
                 Ver produtos
               </a>
-              <a className="inline-flex min-h-12 items-center rounded-full border border-[rgba(0,62,64,0.14)] bg-white px-7 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-[#003E40] hover:bg-[#F8F4EF]" href={promotionsHref}>
+              <a className="inline-flex min-h-12 items-center justify-center rounded-full border border-[rgba(0,62,64,0.14)] bg-white px-6 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-[#003E40] hover:bg-[#F8F4EF] sm:px-7 sm:py-4 sm:tracking-[0.12em]" href={promotionsHref}>
                 Ir para promoções
               </a>
             </div>

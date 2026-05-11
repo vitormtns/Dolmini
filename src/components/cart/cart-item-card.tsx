@@ -22,8 +22,8 @@ export function CartItemCard({
   if (!rawItem) return null;
 
   return (
-    <div className="flex gap-4 rounded-[1.2rem] border border-[rgba(0,62,64,0.12)] bg-white p-4 shadow-soft">
-      <div className="h-32 w-24 shrink-0 overflow-hidden rounded-[0.9rem] bg-[#EFE7DC] sm:w-28">
+    <div className="grid grid-cols-[84px_1fr] gap-3 rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-white p-3 shadow-soft sm:flex sm:gap-4 sm:rounded-[1.2rem] sm:p-4">
+      <div className="h-28 w-[84px] shrink-0 overflow-hidden rounded-[0.8rem] bg-[#EFE7DC] sm:h-32 sm:w-28 sm:rounded-[0.9rem]">
         {validatedItem?.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img alt={validatedItem.name} className="h-full w-full object-cover" src={validatedItem.imageUrl} />
@@ -35,14 +35,14 @@ export function CartItemCard({
         <p className="mt-2 text-sm text-muted-foreground">
           {validatedItem ? formatCurrency(validatedItem.unitPrice) : "Pre\u00e7o ser\u00e1 recalculado no servidor"}
         </p>
-        <div className="mt-3 flex flex-wrap items-center gap-3">
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
           <QuantityStepper value={rawItem.quantity} onChange={(quantity) => updateQuantity(productId, variantId, quantity)} />
           <button className="min-h-11 text-sm font-semibold text-red-700" onClick={() => removeItem(productId, variantId)} type="button">
             Remover
           </button>
         </div>
       </div>
-      <strong className="text-right text-sm font-extrabold text-primary sm:text-base">{validatedItem ? formatCurrency(validatedItem.subtotal) : ""}</strong>
+      <strong className="col-span-2 border-t border-primary/10 pt-2 text-right text-sm font-extrabold text-primary sm:border-0 sm:pt-0 sm:text-base">{validatedItem ? formatCurrency(validatedItem.subtotal) : ""}</strong>
     </div>
   );
 }

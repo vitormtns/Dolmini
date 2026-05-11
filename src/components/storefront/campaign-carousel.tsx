@@ -57,10 +57,10 @@ export function CampaignCarousel({
 
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <div className="hide-scrollbar flex gap-4 overflow-x-auto pb-2 [scroll-snap-type:x_mandatory]">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+        <div className="hide-scrollbar flex gap-3 overflow-x-auto pb-2 sm:gap-4 [scroll-snap-type:x_mandatory]">
           {campaigns.map((campaign) => (
-            <Link className="group relative min-h-[280px] w-[82vw] shrink-0 overflow-hidden rounded-[1.4rem] border border-[rgba(0,62,64,0.12)] bg-[#EFE7DC] p-5 shadow-soft transition duration-300 hover:-translate-y-1 sm:w-[410px] [scroll-snap-align:start]" href={campaign.href} key={campaign.title}>
+            <Link className="group relative min-h-[230px] w-[78vw] shrink-0 overflow-hidden rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-[#EFE7DC] p-4 shadow-soft transition duration-300 hover:-translate-y-1 sm:min-h-[280px] sm:w-[410px] sm:rounded-[1.4rem] sm:p-5 [scroll-snap-align:start]" href={campaign.href} key={campaign.title}>
               <div className="absolute inset-0">
                 {campaign.imageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -68,13 +68,13 @@ export function CampaignCarousel({
                 ) : (
                   <ProductImagePlaceholder label={campaign.title} />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#002D2F]/82 via-[#003E40]/26 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#002D2F]/84 via-[#003E40]/30 to-transparent" />
               </div>
-              <div className="relative flex h-full min-h-[240px] flex-col justify-end text-white">
-                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#00C2C7]">{campaign.label}</p>
-                <h3 className="mt-2 text-3xl font-extrabold tracking-tight">{campaign.title}</h3>
+              <div className="relative flex h-full min-h-[198px] flex-col justify-end text-white sm:min-h-[240px]">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#00C2C7] sm:text-xs sm:tracking-[0.18em]">{campaign.label}</p>
+                <h3 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{campaign.title}</h3>
                 <p className="mt-2 max-w-xs text-sm leading-6 text-white/82">{campaign.subtitle}</p>
-                <span className="mt-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#003E40] transition group-hover:bg-[#00C2C7]">
+                <span className="mt-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#003E40] transition group-hover:bg-[#00C2C7] sm:mt-5 sm:h-11 sm:w-11">
                   <ArrowUpRight className="h-5 w-5" />
                 </span>
               </div>

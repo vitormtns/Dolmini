@@ -9,8 +9,8 @@ export function CartSummary({ checkoutHref = "/checkout" }: { checkoutHref?: str
   const canCheckout = Boolean(validatedCart && !validationError);
 
   return (
-    <aside className="rounded-[1.5rem] border border-primary/10 bg-white p-6 shadow-lift lg:sticky lg:top-32 lg:self-start">
-      <h2 className="text-3xl font-extrabold tracking-tight text-primary">Resumo</h2>
+    <aside className="rounded-[1.1rem] border border-primary/10 bg-white p-5 shadow-lift sm:rounded-[1.5rem] sm:p-6 lg:sticky lg:top-32 lg:self-start">
+      <h2 className="text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">Resumo</h2>
       <p className="mt-1 text-xs text-muted-foreground">
         Valores estimados visualmente. O checkout recalcula tudo no servidor.
       </p>

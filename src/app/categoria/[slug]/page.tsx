@@ -56,29 +56,29 @@ export default async function CategoryPage({ params }: Props) {
     <StorefrontShell>
       <main>
         <section className="petrol-panel overflow-hidden text-white">
-          <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div className="mx-auto grid max-w-7xl gap-7 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[#00C2C7]">Categoria</p>
-              <h1 className="mt-3 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-7xl">{data.category.name}</h1>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#00C2C7] sm:tracking-[0.24em]">Categoria</p>
+              <h1 className="mt-3 max-w-[20rem] break-words text-[clamp(2.15rem,9.5vw,2.8rem)] font-extrabold leading-[1.04] tracking-tight sm:max-w-none sm:text-7xl">{data.category.name}</h1>
               {data.category.description ? (
-                <p className="mt-5 max-w-2xl text-sm leading-6 text-white/72">{data.category.description}</p>
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-white/72 sm:mt-5">{data.category.description}</p>
               ) : null}
             </div>
-            <div className="grid gap-3 rounded-[1.3rem] border border-white/12 bg-white/8 p-4 sm:grid-cols-2">
+            <div className="grid gap-2 rounded-[1rem] border border-white/12 bg-white/8 p-3 sm:grid-cols-2 sm:gap-3 sm:rounded-[1.3rem] sm:p-4">
               {data.categories
                 .filter((category) => category.id !== data.category.id)
                 .slice(0, 4)
                 .map((category) => (
-                  <Link className="group flex items-center justify-between rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white/82 transition hover:bg-white hover:text-[#003E40]" href={`/categoria/${category.slug}`} key={category.id}>
-                    {category.name}
-                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                  <Link className="group flex min-h-11 items-center justify-between gap-3 rounded-xl bg-white/10 px-3 py-3 text-sm font-bold text-white/82 transition hover:bg-white hover:text-[#003E40] sm:rounded-2xl sm:px-4" href={`/categoria/${category.slug}`} key={category.id}>
+                    <span className="min-w-0 truncate">{category.name}</span>
+                    <ArrowRight className="h-4 w-4 shrink-0 transition group-hover:translate-x-0.5" />
                   </Link>
                 ))}
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
           <SectionHeading
             eyebrow="Vitrine da categoria"
             title="Produtos selecionados"
@@ -88,10 +88,10 @@ export default async function CategoryPage({ params }: Props) {
             <>
               <ProductGrid products={data.products} />
               {data.products.length > 4 ? (
-                <div className="petrol-panel mt-10 rounded-[1.4rem] p-8 text-white">
-                  <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C2C7]">Dolmini Model</p>
-                  <h2 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-tight">Continue explorando a curadoria completa da loja.</h2>
-                  <Link className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-[#003E40]" href="/produtos">
+                <div className="petrol-panel mt-8 rounded-[1rem] p-5 text-white sm:mt-10 sm:rounded-[1.4rem] sm:p-8">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#00C2C7] sm:tracking-[0.2em]">Dolmini Model</p>
+                  <h2 className="mt-3 max-w-2xl text-2xl font-extrabold tracking-tight sm:text-3xl">Continue explorando a curadoria completa da loja.</h2>
+                  <Link className="mt-6 inline-flex min-h-12 rounded-full bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-[#003E40]" href="/produtos">
                     Ver todos os produtos
                   </Link>
                 </div>
@@ -100,7 +100,7 @@ export default async function CategoryPage({ params }: Props) {
           ) : (
             <EmptyProductsState
               title="Categoria sem produtos ativos"
-              description="Produtos publicados nesta categoria aparecer\u00e3o aqui automaticamente."
+              description="Produtos publicados nesta categoria aparecerão aqui automaticamente."
             />
           )}
         </section>

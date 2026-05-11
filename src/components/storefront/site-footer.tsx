@@ -5,9 +5,9 @@ const footerLogoSrc = "/logofooter.png";
 export function SiteFooter() {
   return (
     <footer className="petrol-panel text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 sm:py-12 md:grid-cols-[1.2fr_0.8fr_0.8fr] md:gap-10">
         <div>
-          <div className="h-40 w-110">
+          <div className="h-28 w-72 max-w-full sm:h-40 sm:w-[27.5rem]">
             <img alt="Dolmini Model" className="h-full w-full object-contain object-left" src={footerLogoSrc} />
           </div>
           <p className="mt-4 max-w-md text-sm leading-6 text-white/72">
@@ -15,7 +15,7 @@ export function SiteFooter() {
           </p>
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/55">Loja</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/55 sm:tracking-[0.22em]">Loja</p>
           <div className="mt-4 grid gap-3 text-sm text-white/78">
             <Link href="/produtos">Produtos</Link>
             <Link href="/produtos?categoria=jeans">Jeans</Link>
@@ -24,7 +24,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/55">Atendimento</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/55 sm:tracking-[0.22em]">Atendimento</p>
           <p className="mt-4 text-sm leading-6 text-white/78">
             Atendimento próximo, peças selecionadas e checkout seguro preparado para Mercado Pago.
           </p>

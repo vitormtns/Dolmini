@@ -66,9 +66,9 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <StorefrontShell>
-      <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:py-10">
-        <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#6B7A7C]">
-          <Link className="hover:text-[#003E40]" href="/">In&iacute;cio</Link>
+      <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-7 lg:py-10">
+        <nav className="mb-4 flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#6B7A7C] sm:mb-6 sm:text-xs sm:tracking-[0.14em]">
+          <Link className="hover:text-[#003E40]" href="/">Início</Link>
           <ChevronRight className="h-3.5 w-3.5" />
           <Link className="hover:text-[#003E40]" href="/produtos">Produtos</Link>
           {category ? (
@@ -79,33 +79,33 @@ export default async function ProductPage({ params }: Props) {
           ) : null}
         </nav>
 
-        <div className="grid gap-9 lg:grid-cols-[1.08fr_0.92fr]">
+        <div className="grid min-w-0 gap-6 sm:gap-9 lg:grid-cols-[1.08fr_0.92fr]">
           <ProductGalleryClient images={images} productName={product.name} />
 
           <section className="lg:sticky lg:top-32 lg:self-start">
-            <div className="rounded-[1.5rem] border border-[rgba(0,62,64,0.12)] bg-white p-5 shadow-soft sm:p-7">
+            <div className="rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-white p-4 shadow-soft sm:rounded-[1.5rem] sm:p-7">
               {category ? (
-                <Link className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#00A7A7] hover:text-[#003E40]" href={`/categoria/${category.slug}`}>
+                <Link className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#00A7A7] hover:text-[#003E40] sm:tracking-[0.22em]" href={`/categoria/${category.slug}`}>
                   {category.name}
                 </Link>
               ) : null}
-              <h1 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-tight text-[#003E40] sm:text-6xl">{product.name}</h1>
+              <h1 className="mt-3 break-words text-[clamp(2rem,9vw,3rem)] font-extrabold leading-[1.04] tracking-tight text-[#003E40] sm:mt-4 sm:text-6xl">{product.name}</h1>
               {product.shortDescription ? (
-                <p className="mt-5 max-w-xl text-base leading-7 text-[#6B7A7C]">{product.shortDescription}</p>
+                <p className="mt-4 max-w-xl text-sm leading-6 text-[#6B7A7C] sm:mt-5 sm:text-base sm:leading-7">{product.shortDescription}</p>
               ) : null}
-              <div className="mt-7 flex flex-wrap items-end gap-3">
-                <strong className="text-4xl font-extrabold tracking-tight text-[#003E40]">{formatCurrency(product.salePrice ?? product.price)}</strong>
+              <div className="mt-6 flex flex-wrap items-end gap-3 sm:mt-7">
+                <strong className="text-3xl font-extrabold tracking-tight text-[#003E40] sm:text-4xl">{formatCurrency(product.salePrice ?? product.price)}</strong>
                 {hasSalePrice ? (
                   <span className="pb-1 text-sm font-semibold text-[#6B7A7C] line-through">{formatCurrency(product.price)}</span>
                 ) : null}
                 {hasSalePrice || product.isPromotion ? (
                   <span className="mb-1 inline-flex rounded-full bg-[#00A7A7] px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-white">
-                    Promo&ccedil;&atilde;o
+                    Promoção
                   </span>
                 ) : null}
               </div>
 
-              <div className="mt-7 rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-[#F8F4EF] p-4 text-sm">
+              <div className="mt-6 rounded-[0.9rem] border border-[rgba(0,62,64,0.12)] bg-[#F8F4EF] p-4 text-sm sm:mt-7 sm:rounded-[1rem]">
                 <p className="font-extrabold text-[#003E40]">Disponibilidade</p>
                 <p className="mt-1 text-[#6B7A7C]">
                   {product.stockQuantity > 0 ? `${product.stockQuantity} unidade(s) em estoque` : "Estoque indispon\u00edvel"}
@@ -124,7 +124,7 @@ export default async function ProductPage({ params }: Props) {
                 </a>
               </div>
 
-              <div className="mt-7 grid gap-3 text-sm">
+              <div className="mt-6 grid gap-2.5 text-sm sm:mt-7 sm:gap-3">
                 {[
                   { icon: ShieldCheck, text: "Checkout recalculado e validado no servidor" },
                   { icon: PackageCheck, text: "Estoque conferido antes da finaliza\u00e7\u00e3o" },
@@ -140,13 +140,13 @@ export default async function ProductPage({ params }: Props) {
           </section>
         </div>
 
-        <section className="mt-12 grid gap-4 lg:grid-cols-3">
+        <section className="mt-9 grid gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-3">
           {[
             { title: "Descri\u00e7\u00e3o", text: product.description ?? product.shortDescription ?? "Pe\u00e7a selecionada para a curadoria Dolmini Model." },
             { title: "Detalhes", text: "As informa\u00e7\u00f5es de pre\u00e7o e estoque s\u00e3o validadas antes da finaliza\u00e7\u00e3o da compra." },
             { title: "Trocas e atendimento", text: "Fale com a loja para combinar entrega, d\u00favidas de medida e orienta\u00e7\u00f5es de troca." }
           ].map((block) => (
-            <div className="rounded-[1.2rem] border border-[rgba(0,62,64,0.12)] bg-white p-5 shadow-soft" key={block.title}>
+            <div className="rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-white p-4 shadow-soft sm:rounded-[1.2rem] sm:p-5" key={block.title}>
               <h2 className="text-sm font-extrabold uppercase tracking-[0.16em] text-[#003E40]">{block.title}</h2>
               <p className="mt-4 whitespace-pre-line text-sm leading-7 text-[#6B7A7C]">{block.text}</p>
             </div>
@@ -154,7 +154,7 @@ export default async function ProductPage({ params }: Props) {
         </section>
 
         {relatedProducts.length ? (
-          <section className="mt-16 border-t border-[rgba(0,62,64,0.12)] pt-12">
+          <section className="mt-12 border-t border-[rgba(0,62,64,0.12)] pt-9 sm:mt-16 sm:pt-12">
             <SectionHeading
               eyebrow="Combine com"
               title="Você também pode gostar"

@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Produtos | Dolmini Model",
-  description: "Cole\u00e7\u00e3o completa da Dolmini Model."
+  description: "Coleção completa da Dolmini Model."
 };
 
 type Props = {
@@ -100,8 +100,8 @@ export default async function ProductsPage({ searchParams }: Props) {
           <div className="hide-scrollbar -mx-4 mb-7 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:mb-8 sm:px-0">
             {[
               { label: "Destaques", value: undefined },
-              { label: "Menor pre\u00e7o", value: "menor-preco" },
-              { label: "Promo\u00e7\u00f5es", value: "promocoes" },
+              { label: "Menor preço", value: "menor-preco" },
+              { label: "Promoções", value: "promocoes" },
               { label: "Novidades", value: "novidades" }
             ].map((option) => {
               const href = `/produtos?${new URLSearchParams({
@@ -119,7 +119,7 @@ export default async function ProductsPage({ searchParams }: Props) {
 
           <SectionHeading
             title={selectedCategory?.name ?? "Todos os produtos"}
-            subtitle={selectedCategory?.description ?? "Grid premium com imagens grandes, pre\u00e7o claro e favoritos da marca."}
+            subtitle={selectedCategory?.description ?? "Grid premium com imagens grandes, preço claro e favoritos da marca."}
           />
 
           {orderedProducts.length ? (
@@ -132,3 +132,4 @@ export default async function ProductsPage({ searchParams }: Props) {
     </StorefrontShell>
   );
 }
+

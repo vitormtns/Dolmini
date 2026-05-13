@@ -13,11 +13,13 @@ export type ProductVariant = {
   id: string;
   productId: string;
   sku: string | null;
+  size: string | null;
+  color: string | null;
   name: string;
-  optionValues: Record<string, string>;
-  priceAdjustment: number;
+  price: number | null;
+  priceCents: number | null;
   stockQuantity: number;
-  status: ProductStatus;
+  isActive: boolean;
 };
 
 export type Product = {

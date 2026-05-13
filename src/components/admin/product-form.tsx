@@ -3,8 +3,18 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Category } from "@/lib/commerce/categories/category.types";
-import type { Product, ProductStatus } from "@/lib/commerce/products/product.types";
+import type { Product, ProductStatus, ProductVariant } from "@/lib/commerce/products/product.types";
 import { slugify } from "@/lib/format";
+
+type ProductVariantFormState = {
+  id?: string;
+  size: string;
+  color: string;
+  sku: string;
+  stockQuantity: string;
+  price: string;
+  isActive: boolean;
+};
 
 type ProductFormState = {
   name: string;
@@ -20,6 +30,7 @@ type ProductFormState = {
   isPromotion: boolean;
   seoTitle: string;
   seoDescription: string;
+  variants: ProductVariantFormState[];
 };
 
 export function ProductForm({
@@ -46,7 +57,8 @@ export function ProductForm({
     isFeatured: product?.isFeatured ?? false,
     isPromotion: product?.isPromotion ?? false,
     seoTitle: product?.seoTitle ?? "",
-    seoDescription: product?.seoDescription ?? ""
+    seoDescription: product?.seoDescription ?? "",
+    variants: product?.variants.map(toVariantFormState) ?? []
   }), [product]);
   const [form, setForm] = useState<ProductFormState>(initialState);
 
@@ -56,6 +68,43 @@ export function ProductForm({
       if (key === "name" && !slugTouched) next.slug = slugify(String(value));
       return next;
     });
+  }
+
+  function addVariant() {
+    setForm((current) => ({
+      ...current,
+      variants: [
+        ...current.variants,
+        {
+          size: "",
+          color: "",
+          sku: "",
+          stockQuantity: "0",
+          price: "",
+          isActive: true
+        }
+      ]
+    }));
+  }
+
+  function updateVariant<K extends keyof ProductVariantFormState>(
+    index: number,
+    key: K,
+    value: ProductVariantFormState[K]
+  ) {
+    setForm((current) => ({
+      ...current,
+      variants: current.variants.map((variant, candidateIndex) =>
+        candidateIndex === index ? { ...variant, [key]: value } : variant
+      )
+    }));
+  }
+
+  function removeVariant(index: number) {
+    setForm((current) => ({
+      ...current,
+      variants: current.variants.filter((_, candidateIndex) => candidateIndex !== index)
+    }));
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -77,7 +126,16 @@ export function ProductForm({
       isFeatured: form.isFeatured,
       isPromotion: form.isPromotion,
       seoTitle: form.seoTitle || null,
-      seoDescription: form.seoDescription || null
+      seoDescription: form.seoDescription || null,
+      variants: form.variants.map((variant) => ({
+        id: variant.id,
+        size: variant.size.trim() || null,
+        color: variant.color.trim() || null,
+        sku: variant.sku.trim() || null,
+        stockQuantity: Number(variant.stockQuantity),
+        price: variant.price ? Number(variant.price) : null,
+        isActive: variant.isActive
+      }))
     };
 
     const response = await fetch("/api/admin/products", {
@@ -145,7 +203,7 @@ export function ProductForm({
           <input className="rounded-md border px-3 py-2" min="0.01" step="0.01" type="number" value={form.salePrice} onChange={(event) => update("salePrice", event.target.value)} />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Estoque
+          Estoque do produto simples
           <input className="rounded-md border px-3 py-2" min="0" required step="1" type="number" value={form.stockQuantity} onChange={(event) => update("stockQuantity", event.target.value)} />
         </label>
         <div className="flex flex-wrap items-center gap-4 pt-6">
@@ -159,6 +217,59 @@ export function ProductForm({
           </label>
         </div>
       </div>
+
+      <section className="grid gap-4 rounded-lg border bg-white p-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-base font-semibold">Variações</h2>
+            <p className="text-sm text-muted-foreground">Use para tamanho, numeração, cor e estoque por opção. Produtos sem variações continuam funcionando normalmente.</p>
+          </div>
+          <button className="rounded-md border px-4 py-2 text-sm font-medium" type="button" onClick={addVariant}>
+            Adicionar variação
+          </button>
+        </div>
+
+        {form.variants.length === 0 ? (
+          <p className="rounded-md bg-muted p-3 text-sm text-muted-foreground">Nenhuma variação cadastrada.</p>
+        ) : (
+          <div className="grid gap-3">
+            {form.variants.map((variant, index) => (
+              <div className="grid gap-3 rounded-md border p-3 md:grid-cols-6" key={variant.id ?? index}>
+                <label className="grid gap-1 text-sm font-medium">
+                  Tamanho
+                  <input className="rounded-md border px-3 py-2" placeholder="P, M, G, 36, 38..." value={variant.size} onChange={(event) => updateVariant(index, "size", event.target.value)} />
+                </label>
+                <label className="grid gap-1 text-sm font-medium">
+                  Cor
+                  <input className="rounded-md border px-3 py-2" placeholder="Azul claro" value={variant.color} onChange={(event) => updateVariant(index, "color", event.target.value)} />
+                </label>
+                <label className="grid gap-1 text-sm font-medium">
+                  SKU
+                  <input className="rounded-md border px-3 py-2" value={variant.sku} onChange={(event) => updateVariant(index, "sku", event.target.value)} />
+                </label>
+                <label className="grid gap-1 text-sm font-medium">
+                  Estoque
+                  <input className="rounded-md border px-3 py-2" min="0" step="1" type="number" value={variant.stockQuantity} onChange={(event) => updateVariant(index, "stockQuantity", event.target.value)} />
+                </label>
+                <label className="grid gap-1 text-sm font-medium">
+                  Preço próprio
+                  <input className="rounded-md border px-3 py-2" min="0.01" placeholder="Opcional" step="0.01" type="number" value={variant.price} onChange={(event) => updateVariant(index, "price", event.target.value)} />
+                </label>
+                <div className="flex flex-wrap items-end gap-3">
+                  <label className="inline-flex min-h-10 items-center gap-2 text-sm font-medium">
+                    <input checked={variant.isActive} type="checkbox" onChange={(event) => updateVariant(index, "isActive", event.target.checked)} />
+                    Ativa
+                  </label>
+                  <button className="min-h-10 text-sm font-semibold text-red-700" type="button" onClick={() => removeVariant(index)}>
+                    Remover
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
       <div className="grid gap-4 rounded-lg border bg-white p-5 md:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
           Título SEO
@@ -176,4 +287,16 @@ export function ProductForm({
       </div>
     </form>
   );
+}
+
+function toVariantFormState(variant: ProductVariant): ProductVariantFormState {
+  return {
+    id: variant.id,
+    size: variant.size ?? "",
+    color: variant.color ?? "",
+    sku: variant.sku ?? "",
+    stockQuantity: String(variant.stockQuantity),
+    price: variant.price == null ? "" : String(variant.price),
+    isActive: variant.isActive
+  };
 }

@@ -5,6 +5,7 @@ import type { ProductCreateInput, ProductUpdateInput } from "@/lib/commerce/prod
 type Client = SupabaseClient<any, "public", any>;
 
 function mapProduct(row: any): Product {
+  const productPrice = Number(row.sale_price ?? row.price);
   return {
     id: row.id,
     categoryId: row.category_id,
@@ -32,11 +33,21 @@ function mapProduct(row: any): Product {
       id: variant.id,
       productId: variant.product_id,
       sku: variant.sku,
-      name: variant.name,
-      optionValues: variant.option_values ?? {},
-      priceAdjustment: Number(variant.price_adjustment ?? 0),
+      size: variant.size ?? variant.option_values?.size ?? variant.option_values?.tamanho ?? null,
+      color: variant.color ?? variant.option_values?.color ?? variant.option_values?.cor ?? null,
+      name: buildVariantName({
+        size: variant.size ?? variant.option_values?.size ?? variant.option_values?.tamanho ?? null,
+        color: variant.color ?? variant.option_values?.color ?? variant.option_values?.cor ?? null,
+        fallback: variant.name
+      }),
+      price: variant.price_cents == null
+        ? (variant.price_adjustment ? Number(productPrice + Number(variant.price_adjustment)) : null)
+        : Number(variant.price_cents) / 100,
+      priceCents: variant.price_cents == null
+        ? (variant.price_adjustment ? Math.round((productPrice + Number(variant.price_adjustment)) * 100) : null)
+        : Number(variant.price_cents),
       stockQuantity: variant.stock_quantity,
-      status: variant.status
+      isActive: variant.is_active ?? variant.status === "active"
     })),
     createdAt: row.created_at,
     updatedAt: row.updated_at
@@ -165,7 +176,7 @@ export class ProductRepository {
     }
 
     if (images || variants) {
-      await this.replaceRelations(id, images ?? [], variants ?? []);
+      await this.replaceRelations(id, images, variants);
     }
 
     return this.findById(id);
@@ -237,13 +248,17 @@ export class ProductRepository {
 
   private async replaceRelations(
     productId: string,
-    images: ProductCreateInput["images"],
-    variants: ProductCreateInput["variants"]
+    images: ProductCreateInput["images"] | undefined,
+    variants: ProductCreateInput["variants"] | undefined
   ) {
-    await this.supabase.from("product_images").delete().eq("product_id", productId);
-    await this.supabase.from("product_variants").delete().eq("product_id", productId);
+    if (images) {
+      await this.supabase.from("product_images").delete().eq("product_id", productId);
+    }
+    if (variants) {
+      await this.supabase.from("product_variants").delete().eq("product_id", productId);
+    }
 
-    if (images.length > 0) {
+    if (images && images.length > 0) {
       const { error } = await this.supabase.from("product_images").insert(
         images.map((image) => ({
           product_id: productId,
@@ -256,19 +271,38 @@ export class ProductRepository {
       if (error) throw error;
     }
 
-    if (variants.length > 0) {
+    if (variants && variants.length > 0) {
       const { error } = await this.supabase.from("product_variants").insert(
         variants.map((variant) => ({
           product_id: productId,
           sku: variant.sku ?? null,
-          name: variant.name,
-          option_values: variant.optionValues,
-          price_adjustment: variant.priceAdjustment,
+          size: variant.size?.trim() || null,
+          color: variant.color?.trim() || null,
+          name: buildVariantName({ size: variant.size, color: variant.color }),
+          option_values: {
+            ...(variant.size?.trim() ? { size: variant.size.trim() } : {}),
+            ...(variant.color?.trim() ? { color: variant.color.trim() } : {})
+          },
+          price_cents: variant.price == null ? null : Math.round(variant.price * 100),
+          price_adjustment: 0,
           stock_quantity: variant.stockQuantity,
-          status: variant.status
+          is_active: variant.isActive,
+          status: variant.isActive ? "active" : "archived"
         }))
       );
       if (error) throw error;
     }
   }
 }
+
+function buildVariantName(input: {
+  size?: string | null;
+  color?: string | null;
+  fallback?: string | null;
+}) {
+  const parts = [input.size, input.color].filter(Boolean);
+  if (parts.length > 0) return parts.join(" · ");
+  return input.fallback ?? "Variação";
+}
+
+

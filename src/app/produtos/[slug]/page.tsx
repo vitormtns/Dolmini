@@ -63,6 +63,10 @@ export default async function ProductPage({ params }: Props) {
   const { product, category, relatedProducts } = data;
   const images = [...product.images].sort((a, b) => a.sortOrder - b.sortOrder);
   const hasSalePrice = product.salePrice != null && product.salePrice < product.price;
+  const activeVariants = product.variants.filter((variant) => variant.isActive);
+  const hasVariants = activeVariants.length > 0;
+  const totalVariantStock = activeVariants.reduce((sum, variant) => sum + variant.stockQuantity, 0);
+  const availableStock = hasVariants ? totalVariantStock : product.stockQuantity;
 
   return (
     <StorefrontShell>
@@ -108,12 +112,17 @@ export default async function ProductPage({ params }: Props) {
               <div className="mt-6 rounded-[0.9rem] border border-[rgba(0,62,64,0.12)] bg-[#F8F4EF] p-4 text-sm sm:mt-7 sm:rounded-[1rem]">
                 <p className="font-extrabold text-[#003E40]">Disponibilidade</p>
                 <p className="mt-1 text-[#6B7A7C]">
-                  {product.stockQuantity > 0 ? `${product.stockQuantity} unidade(s) em estoque` : "Estoque indispon\u00edvel"}
+                  {availableStock > 0 ? `${availableStock} unidade(s) em estoque` : "Estoque indisponível"}
                 </p>
               </div>
 
               <div className="mt-6 grid gap-3">
-                <AddToCartButton productId={product.id} disabled={product.stockQuantity <= 0} />
+                <AddToCartButton
+                  basePrice={product.salePrice ?? product.price}
+                  productId={product.id}
+                  variants={activeVariants}
+                  disabled={availableStock <= 0}
+                />
                 <a
                   className="inline-flex min-h-12 w-full justify-center rounded-full border border-[rgba(0,62,64,0.14)] bg-white px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-[#003E40] transition-colors hover:bg-[#F8F4EF]"
                   href={`https://wa.me/?text=${encodeURIComponent(`Ola! Tenho interesse no produto ${product.name} da Dolmini Model.`)}`}
@@ -127,7 +136,7 @@ export default async function ProductPage({ params }: Props) {
               <div className="mt-6 grid gap-2.5 text-sm sm:mt-7 sm:gap-3">
                 {[
                   { icon: ShieldCheck, text: "Checkout recalculado e validado no servidor" },
-                  { icon: PackageCheck, text: "Estoque conferido antes da finaliza\u00e7\u00e3o" },
+                  { icon: PackageCheck, text: "Estoque conferido antes da finalização" },
                   { icon: HeartHandshake, text: "Atendimento direto para entrega e trocas" }
                 ].map((item) => (
                   <div className="flex gap-3 rounded-xl bg-[#F8F4EF] p-3 text-[#6B7A7C]" key={item.text}>
@@ -142,9 +151,9 @@ export default async function ProductPage({ params }: Props) {
 
         <section className="mt-9 grid gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-3">
           {[
-            { title: "Descri\u00e7\u00e3o", text: product.description ?? product.shortDescription ?? "Pe\u00e7a selecionada para a curadoria Dolmini Model." },
-            { title: "Detalhes", text: "As informa\u00e7\u00f5es de pre\u00e7o e estoque s\u00e3o validadas antes da finaliza\u00e7\u00e3o da compra." },
-            { title: "Trocas e atendimento", text: "Fale com a loja para combinar entrega, d\u00favidas de medida e orienta\u00e7\u00f5es de troca." }
+            { title: "Descrição", text: product.description ?? product.shortDescription ?? "Peça selecionada para a curadoria Dolmini Model." },
+            { title: "Detalhes", text: "As informações de preço e estoque são validadas antes da finalização da compra." },
+            { title: "Trocas e atendimento", text: "Fale com a loja para combinar entrega, dúvidas de medida e orientações de troca." }
           ].map((block) => (
             <div className="rounded-[1rem] border border-[rgba(0,62,64,0.12)] bg-white p-4 shadow-soft sm:rounded-[1.2rem] sm:p-5" key={block.title}>
               <h2 className="text-sm font-extrabold uppercase tracking-[0.16em] text-[#003E40]">{block.title}</h2>
@@ -167,3 +176,4 @@ export default async function ProductPage({ params }: Props) {
     </StorefrontShell>
   );
 }
+

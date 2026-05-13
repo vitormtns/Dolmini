@@ -4,7 +4,7 @@ import type { Product, ProductVariant } from "@/lib/commerce/products/product.ty
 export class PricingService {
   getUnitPrice(product: Product, variant?: ProductVariant | null) {
     const basePrice = effectivePrice(product.price, product.salePrice);
-    return normalizeMoney(basePrice + (variant?.priceAdjustment ?? 0));
+    return normalizeMoney(variant?.price ?? basePrice);
   }
 
   summarize(lines: Array<{ quantity: number; unitPrice: number }>) {

@@ -13,15 +13,14 @@ export class InventoryService {
     }
 
     const stock = variant ? variant.stockQuantity : product.stockQuantity;
-    const status = variant ? variant.status : product.status;
 
-    if (status !== "active") {
+    if (variant && !variant.isActive) {
       throw new CommerceError(`Variação indisponível para ${product.name}.`, "PRODUCT_UNAVAILABLE");
     }
 
     if (stock < quantity) {
       throw new CommerceError(
-        `Estoque insuficiente para ${product.name}. Disponivel: ${stock}.`,
+        `Estoque insuficiente para ${product.name}. Disponível: ${stock}.`,
         "OUT_OF_STOCK"
       );
     }

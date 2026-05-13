@@ -9,6 +9,12 @@ export type ValidatedCartItem = {
   variantId: string | null;
   name: string;
   variantName: string | null;
+  variantSnapshot: {
+    variantId: string;
+    size: string | null;
+    color: string | null;
+    sku: string | null;
+  } | null;
   quantity: number;
   unitPrice: number;
   subtotal: number;

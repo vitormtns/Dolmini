@@ -8,11 +8,12 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
   return (
     <div className="overflow-hidden rounded-lg border bg-white">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[820px] text-left text-sm">
+        <table className="w-full min-w-[920px] text-left text-sm">
           <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-4 py-3">Pedido</th>
               <th className="px-4 py-3">Cliente</th>
+              <th className="px-4 py-3">Itens</th>
               <th className="px-4 py-3">Total</th>
               <th className="px-4 py-3">Pedido</th>
               <th className="px-4 py-3">Pagamento</th>
@@ -27,6 +28,23 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                 <td className="px-4 py-3">
                   <p>{order.customerSnapshot.name}</p>
                   <p className="text-xs text-muted-foreground">{order.customerSnapshot.email}</p>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="grid gap-1">
+                    {order.items.slice(0, 2).map((item) => (
+                      <div key={`${item.productId}-${item.variantId ?? "base"}`}>
+                        <p className="font-medium">{item.name}</p>
+                        {item.variantSnapshot ? (
+                          <p className="text-xs text-muted-foreground">
+                            {[item.variantSnapshot.size && `Tam. ${item.variantSnapshot.size}`, item.variantSnapshot.color && item.variantSnapshot.color]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                    {order.items.length > 2 ? <p className="text-xs text-muted-foreground">+ {order.items.length - 2} item(ns)</p> : null}
+                  </div>
                 </td>
                 <td className="px-4 py-3">{formatCurrency(order.total)}</td>
                 <td className="px-4 py-3"><OrderStatusBadge status={order.status} /></td>

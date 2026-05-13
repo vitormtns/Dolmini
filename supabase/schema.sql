@@ -83,14 +83,23 @@ create table product_images (
 create table product_variants (
   id uuid primary key default gen_random_uuid(),
   product_id uuid not null references products(id) on delete cascade,
+  size text,
+  color text,
   sku text unique,
   name text not null,
   option_values jsonb not null default '{}'::jsonb,
+  price_cents integer check (price_cents is null or price_cents > 0),
   price_adjustment numeric(12, 2) not null default 0,
   stock_quantity integer not null default 0 check (stock_quantity >= 0),
+  is_active boolean not null default true,
   status product_status not null default 'active',
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint product_variant_has_option check (
+    nullif(trim(coalesce(size, '')), '') is not null
+    or nullif(trim(coalesce(color, '')), '') is not null
+    or jsonb_object_length(option_values) > 0
+  )
 );
 
 create table customers (
@@ -130,6 +139,7 @@ create table order_items (
   variant_id uuid references product_variants(id) on delete set null,
   product_name text not null,
   variant_name text,
+  selected_variant_json jsonb,
   quantity integer not null check (quantity > 0),
   unit_price numeric(12, 2) not null check (unit_price >= 0),
   subtotal numeric(12, 2) not null check (subtotal >= 0),
@@ -241,8 +251,10 @@ as $$
 begin
   update product_variants
   set stock_quantity = stock_quantity - p_quantity,
-      status = case when stock_quantity - p_quantity <= 0 then 'out_of_stock'::product_status else status end
+      status = case when stock_quantity - p_quantity <= 0 then 'out_of_stock'::product_status else status end,
+      is_active = case when stock_quantity - p_quantity <= 0 then false else is_active end
   where id = p_variant_id
+    and is_active = true
     and stock_quantity >= p_quantity;
 
   if not found then
@@ -308,6 +320,7 @@ for all using (is_admin()) with check (is_admin());
 create policy "Public read variants from active products" on product_variants
 for select using (
   status = 'active'
+  and is_active = true
   and exists (
     select 1 from products
     where products.id = product_variants.product_id

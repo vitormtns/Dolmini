@@ -31,9 +31,16 @@ export function CartItemCard({
       </div>
       <div className="min-w-0 flex-1">
         <h2 className="font-extrabold tracking-tight text-primary">{validatedItem?.name ?? "Produto no carrinho"}</h2>
-        {validatedItem?.variantName ? <p className="text-sm text-muted-foreground">{validatedItem.variantName}</p> : null}
+        {validatedItem?.variantSnapshot ? (
+          <div className="mt-1 text-sm text-muted-foreground">
+            {validatedItem.variantSnapshot.size ? <p>Tamanho: {validatedItem.variantSnapshot.size}</p> : null}
+            {validatedItem.variantSnapshot.color ? <p>Cor: {validatedItem.variantSnapshot.color}</p> : null}
+          </div>
+        ) : validatedItem?.variantName ? (
+          <p className="text-sm text-muted-foreground">{validatedItem.variantName}</p>
+        ) : null}
         <p className="mt-2 text-sm text-muted-foreground">
-          {validatedItem ? formatCurrency(validatedItem.unitPrice) : "Pre\u00e7o ser\u00e1 recalculado no servidor"}
+          {validatedItem ? formatCurrency(validatedItem.unitPrice) : "Preço será recalculado no servidor"}
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
           <QuantityStepper value={rawItem.quantity} onChange={(quantity) => updateQuantity(productId, variantId, quantity)} />

@@ -24,7 +24,7 @@ export function CartPageContent() {
             {validating
               ? "Validando disponibilidade..."
               : validationError
-                ? "Algum item precisa de revis\u00e3o antes do checkout."
+                ? "Algum item precisa de revisão antes do checkout."
                 : "Revise os itens antes de finalizar."}
           </p>
           <button className="min-h-10 text-sm font-medium text-red-700" onClick={clearCart} type="button">

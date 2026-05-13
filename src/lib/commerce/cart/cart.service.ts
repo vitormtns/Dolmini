@@ -24,9 +24,19 @@ export class CartService {
         throw new CommerceError("Produto não encontrado.", "PRODUCT_NOT_FOUND", 404);
       }
 
+      const hasConfiguredVariants = product.variants.length > 0;
+      const activeVariants = product.variants.filter((variant) => variant.isActive);
       const variant = item.variantId
-        ? product.variants.find((candidate) => candidate.id === item.variantId)
+        ? activeVariants.find((candidate) => candidate.id === item.variantId)
         : null;
+
+      if (hasConfiguredVariants && !item.variantId) {
+        throw new CommerceError(
+          `Escolha uma variação para ${product.name}.`,
+          "PRODUCT_VARIANT_REQUIRED",
+          400
+        );
+      }
 
       if (item.variantId && !variant) {
         throw new CommerceError(
@@ -44,6 +54,14 @@ export class CartService {
         variantId: variant?.id ?? null,
         name: product.name,
         variantName: variant?.name ?? null,
+        variantSnapshot: variant
+          ? {
+              variantId: variant.id,
+              size: variant.size,
+              color: variant.color,
+              sku: variant.sku
+            }
+          : null,
         quantity: item.quantity,
         unitPrice,
         subtotal: normalizeMoney(unitPrice * item.quantity),

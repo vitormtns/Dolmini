@@ -16,12 +16,12 @@ export const productImageInputSchema = z.object({
 
 export const productVariantInputSchema = z.object({
   id: z.string().uuid().optional(),
-  sku: z.string().max(80).nullable().optional(),
-  name: z.string().min(1).max(120),
-  optionValues: z.record(z.string().min(1), z.string().min(1)).default({}),
-  priceAdjustment: z.coerce.number().default(0),
+  size: z.string().trim().max(40).nullable().optional(),
+  color: z.string().trim().max(80).nullable().optional(),
+  sku: z.string().trim().max(80).nullable().optional(),
+  price: z.coerce.number().positive().nullable().optional(),
   stockQuantity: z.coerce.number().int().min(0).default(0),
-  status: productStatusSchema.default("active")
+  isActive: z.coerce.boolean().default(true)
 });
 
 const productBaseSchema = z.object({
@@ -58,6 +58,8 @@ export const productCreateSchema = productBaseSchema.superRefine((input, context
       message: "Categoria é obrigatória para publicar o produto."
     });
   }
+
+  validateVariants(input.variants, context);
 });
 
 export const productUpdateSchema = productBaseSchema.partial().extend({
@@ -78,6 +80,8 @@ export const productUpdateSchema = productBaseSchema.partial().extend({
       message: "Categoria é obrigatória para publicar o produto."
     });
   }
+
+  if (input.variants) validateVariants(input.variants, context);
 });
 
 export const productListQuerySchema = z.object({
@@ -90,3 +94,34 @@ export const productListQuerySchema = z.object({
 
 export type ProductCreateInput = z.infer<typeof productCreateSchema>;
 export type ProductUpdateInput = z.infer<typeof productUpdateSchema>;
+
+function validateVariants(
+  variants: Array<z.infer<typeof productVariantInputSchema>>,
+  context: z.RefinementCtx
+) {
+  const seen = new Set<string>();
+
+  variants.forEach((variant, index) => {
+    const size = variant.size?.trim() ?? "";
+    const color = variant.color?.trim() ?? "";
+
+    if (!size && !color) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["variants", index],
+        message: "Informe tamanho, cor ou ambos para a variação."
+      });
+    }
+
+    const key = `${size.toLocaleLowerCase("pt-BR")}::${color.toLocaleLowerCase("pt-BR")}`;
+    if (seen.has(key)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["variants", index],
+        message: "Já existe uma variação com o mesmo tamanho e cor."
+      });
+    }
+    seen.add(key);
+  });
+}
+

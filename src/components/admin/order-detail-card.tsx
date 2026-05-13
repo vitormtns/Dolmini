@@ -60,7 +60,15 @@ export function OrderDetailCard({ order }: { order: Order }) {
             <div className="flex justify-between gap-4 rounded-md border p-3" key={`${item.productId}-${item.variantId ?? "base"}`}>
               <div>
                 <p className="font-medium">{item.name}</p>
-                {item.variantName ? <p className="text-sm text-muted-foreground">{item.variantName}</p> : null}
+                {item.variantSnapshot ? (
+                  <div className="text-sm text-muted-foreground">
+                    {item.variantSnapshot.size ? <p>Tamanho: {item.variantSnapshot.size}</p> : null}
+                    {item.variantSnapshot.color ? <p>Cor: {item.variantSnapshot.color}</p> : null}
+                    {item.variantSnapshot.sku ? <p>SKU: {item.variantSnapshot.sku}</p> : null}
+                  </div>
+                ) : item.variantName ? (
+                  <p className="text-sm text-muted-foreground">{item.variantName}</p>
+                ) : null}
                 <p className="text-sm text-muted-foreground">Qtd. {item.quantity}</p>
               </div>
               <p className="font-medium">{formatCurrency(item.subtotal)}</p>
@@ -115,3 +123,4 @@ export function OrderDetailCard({ order }: { order: Order }) {
     </div>
   );
 }
+

@@ -23,6 +23,13 @@ export function CheckoutSummary() {
           <div className="flex justify-between gap-4 text-sm" key={`${item.productId}-${item.variantId ?? "base"}`}>
             <div className="min-w-0">
               <p className="font-bold text-primary">{item.name}</p>
+              {item.variantSnapshot ? (
+                <p className="text-muted-foreground">
+                  {[item.variantSnapshot.size && `Tamanho: ${item.variantSnapshot.size}`, item.variantSnapshot.color && `Cor: ${item.variantSnapshot.color}`]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+              ) : null}
               <p className="text-muted-foreground">Qtd. {item.quantity}</p>
             </div>
             <p className="font-extrabold text-primary">{formatCurrency(item.subtotal)}</p>
@@ -43,3 +50,4 @@ export function CheckoutSummary() {
     </aside>
   );
 }
+

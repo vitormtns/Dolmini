@@ -4,10 +4,12 @@ import { AlertTriangle, CheckCircle2, Clock3, ShoppingBag } from "lucide-react";
 export function CheckoutStatusCard({
   title,
   description,
+  secondaryDescription,
   tone = "neutral"
 }: {
   title: string;
   description: string;
+  secondaryDescription?: string;
   tone?: "success" | "warning" | "danger" | "neutral";
 }) {
   const color =
@@ -28,6 +30,9 @@ export function CheckoutStatusCard({
       </div>
       <h1 className="mt-5 text-[clamp(2rem,9vw,2.75rem)] font-extrabold leading-[1.04] tracking-tight text-primary sm:text-5xl">{title}</h1>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
+      {secondaryDescription ? (
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">{secondaryDescription}</p>
+      ) : null}
       <div className="mx-auto mt-6 grid max-w-xs grid-cols-1 justify-center gap-3 sm:flex sm:max-w-none sm:flex-wrap">
         <Link className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-primary-foreground transition-colors hover:bg-[#002D2F] sm:tracking-[0.1em]" href="/produtos">
           Ver produtos

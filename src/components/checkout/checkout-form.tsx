@@ -10,8 +10,8 @@ const checkoutFormSchema = z.object({
   phone: z.string().min(8, "Informe um telefone."),
   document: z.string().optional(),
   postalCode: z.string().min(5, "Informe o CEP."),
-  line1: z.string().min(3, "Informe o endere\u00e7o."),
-  number: z.string().min(1, "Informe o n\u00famero."),
+  line1: z.string().min(3, "Informe o endereço."),
+  number: z.string().min(1, "Informe o número."),
   line2: z.string().optional(),
   neighborhood: z.string().min(2, "Informe o bairro."),
   city: z.string().min(2, "Informe a cidade."),
@@ -55,7 +55,7 @@ export function CheckoutForm() {
     }
 
     if (items.length === 0) {
-      setError("Seu carrinho est\u00e1 vazio.");
+      setError("Seu carrinho está vazio.");
       return;
     }
 
@@ -95,8 +95,8 @@ export function CheckoutForm() {
       setLoading(false);
       setError(
         body.code === "PAYMENT_PROVIDER_NOT_CONFIGURED" || body.code === "PAYMENT_PROVIDER_ERROR"
-          ? "Checkout temporariamente indispon\u00edvel. Tente novamente mais tarde."
-          : body.error ?? "N\u00e3o foi poss\u00edvel iniciar o pagamento."
+          ? "Checkout temporariamente indisponível. Tente novamente mais tarde."
+          : body.error ?? "Não foi possível iniciar o pagamento."
       );
       return;
     }

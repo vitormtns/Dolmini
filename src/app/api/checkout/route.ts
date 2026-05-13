@@ -26,6 +26,17 @@ export async function POST(request: Request) {
 
     return NextResponse.json(apiSuccess({ order, checkout }), { status: 201 });
   } catch (error) {
+    if (error instanceof CommerceError && error.code === "PAYMENT_PROVIDER_ERROR") {
+      return NextResponse.json(
+        {
+          success: false,
+          code: "PAYMENT_PROVIDER_ERROR",
+          error: "Não foi possível iniciar o pagamento. Tente novamente em instantes."
+        },
+        { status: 400 }
+      );
+    }
+
     const apiError = toApiError(error);
     return NextResponse.json(apiError.body, { status: apiError.status });
   }

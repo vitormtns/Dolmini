@@ -1,6 +1,7 @@
 import { CommerceError } from "@/lib/commerce/shared/errors";
 import { env } from "@/lib/env";
 import type {
+  MercadoPagoErrorResponse,
   MercadoPagoPayment,
   MercadoPagoPreferenceRequest,
   MercadoPagoPreferenceResponse
@@ -34,10 +35,11 @@ export class MercadoPagoClient {
     });
 
     if (!response.ok) {
+      await logMercadoPagoPreferenceError(response, payload);
       throw new CommerceError(
-        "Mercado Pago recusou a criacao da preferencia.",
+        "Não foi possível iniciar o pagamento. Tente novamente em instantes.",
         "PAYMENT_PROVIDER_ERROR",
-        502
+        400
       );
     }
 
@@ -82,10 +84,41 @@ function summarizePreferencePayload(payload: MercadoPagoPreferenceRequest) {
     external_reference: payload.external_reference,
     notification_url: payload.notification_url,
     back_urls: payload.back_urls,
-    payment_methods: payload.payment_methods,
+    hasPaymentMethods: "payment_methods" in payload,
     hasExcludedPaymentTypes: "excluded_payment_types" in payload,
     hasExcludedPaymentMethods: "excluded_payment_methods" in payload,
     hasBinaryMode: "binary_mode" in payload,
     auto_return: payload.auto_return
   };
+}
+
+async function logMercadoPagoPreferenceError(
+  response: Response,
+  payload: MercadoPagoPreferenceRequest
+) {
+  const errorBody = await readMercadoPagoErrorBody(response);
+
+  console.error("Mercado Pago preference creation failed", {
+    status: response.status,
+    error: errorBody.parsed?.error,
+    message: errorBody.parsed?.message,
+    cause: errorBody.parsed?.cause,
+    payload: summarizePreferencePayload(payload)
+  });
+}
+
+async function readMercadoPagoErrorBody(response: Response) {
+  const raw = await response.text();
+
+  try {
+    return {
+      raw,
+      parsed: JSON.parse(raw) as MercadoPagoErrorResponse
+    };
+  } catch {
+    return {
+      raw,
+      parsed: { message: raw } satisfies MercadoPagoErrorResponse
+    };
+  }
 }

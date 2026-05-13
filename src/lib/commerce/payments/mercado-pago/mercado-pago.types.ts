@@ -22,10 +22,13 @@ export type MercadoPagoPreferenceRequest = {
     failure: string;
     pending: string;
   };
-  payment_methods?: {
-    default_payment_method_id?: "pix";
-  };
   auto_return: "approved";
+};
+
+export type MercadoPagoErrorResponse = {
+  error?: unknown;
+  message?: unknown;
+  cause?: unknown;
 };
 
 export type MercadoPagoPreferenceResponse = {

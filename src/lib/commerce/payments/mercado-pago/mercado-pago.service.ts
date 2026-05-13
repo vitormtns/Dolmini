@@ -36,9 +36,6 @@ export class MercadoPagoService {
         failure: `${siteUrl}/checkout/erro?order=${order.orderNumber}`,
         pending: `${siteUrl}/checkout/pendente?order=${order.orderNumber}`
       },
-      payment_methods: {
-        default_payment_method_id: "pix"
-      },
       auto_return: "approved"
     });
 

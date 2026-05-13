@@ -22,6 +22,9 @@ export type MercadoPagoPreferenceRequest = {
     failure: string;
     pending: string;
   };
+  payment_methods?: {
+    default_payment_method_id?: "pix";
+  };
   auto_return: "approved";
 };
 
